@@ -634,8 +634,8 @@ function renderDeeperHTML(deeper){
 }
 
 // ── STREAK KEEPER ──
-function getStreakState(){ try{ return JSON.parse(localStorage.getItem('alex-streak'))||{lastDate:null,count:0,history:[]}; }catch{ return {lastDate:null,count:0,history:[]}; } }
-function saveStreakState(s){ localStorage.setItem('alex-streak', JSON.stringify(s)); }
+function getStreakState(){ try{ return JSON.parse(localStorage.getItem('alex-streak-v2'))||{lastDate:null,count:0,history:[]}; }catch{ return {lastDate:null,count:0,history:[]}; } }
+function saveStreakState(s){ localStorage.setItem('alex-streak-v2', JSON.stringify(s)); }
 function touchStreak(){
   const s=getStreakState(); const today=getTodayStr();
   if(s.lastDate===today) return s;
