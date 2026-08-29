@@ -99,6 +99,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .cal-day.key-date{border:1.5px solid var(--rust);}
 .cal-day .edot{position:absolute;bottom:4px;right:5px;width:5px;height:5px;border-radius:50%;background:var(--rose);}
 .streak-card{background:var(--card);border-radius:12px;padding:12px 16px;margin-bottom:16px;box-shadow:0 1px 8px var(--shadow);display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.streak-done-btn{margin-left:auto;background:var(--sage);color:#fff;border:none;border-radius:16px;padding:7px 14px;font-size:0.72rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;}
+.streak-done-btn:hover{background:#5c6a4f;}
+.streak-done-btn.done{background:var(--card2);color:var(--text-light);cursor:default;}
 .streak-strip{display:flex;gap:3px;flex-wrap:wrap;}
 .streak-day{width:9px;height:9px;border-radius:2px;background:var(--card2);}
 .streak-day.filled{background:var(--rust);}
@@ -214,6 +217,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="streak-card">
       <div class="streak-badge" id="streak-badge">🔥 0 day streak</div>
       <div class="streak-strip" id="streakStrip"></div>
+      <button class="streak-done-btn" id="streak-done-btn" onclick="markTodayDone()">Mark today done</button>
     </div>
 
     <div class="section-heading">This Month</div>
@@ -653,6 +657,14 @@ function renderStreakDisplay(){
     days.push(`${dd.getFullYear()}-${String(dd.getMonth()+1).padStart(2,'0')}-${String(dd.getDate()).padStart(2,'0')}`);
   }
   days.forEach(ds=>{ const el=document.createElement('div'); el.className='streak-day'+((s.history||[]).includes(ds)?' filled':''); strip.appendChild(el); });
+  const btn=document.getElementById('streak-done-btn');
+  const doneToday=(s.history||[]).includes(getTodayStr());
+  btn.textContent = doneToday ? 'Done for today ✓' : 'Mark today done';
+  btn.classList.toggle('done', doneToday);
+}
+function markTodayDone(){
+  touchStreak();
+  renderStreakDisplay();
 }
 
 // ── STATE ──
