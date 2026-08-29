@@ -98,7 +98,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .cal-day .day-moon{position:absolute;top:4px;right:4px;font-size:0.68rem;opacity:0.8;}
 .cal-day.key-date{border:1.5px solid var(--rust);}
 .cal-day .edot{position:absolute;bottom:4px;right:5px;width:5px;height:5px;border-radius:50%;background:var(--rose);}
-.streak-strip{display:flex;gap:3px;margin-top:10px;flex-wrap:wrap;}
+.streak-card{background:var(--card);border-radius:12px;padding:12px 16px;margin-bottom:16px;box-shadow:0 1px 8px var(--shadow);display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.streak-strip{display:flex;gap:3px;flex-wrap:wrap;}
 .streak-day{width:9px;height:9px;border-radius:2px;background:var(--card2);}
 .streak-day.filled{background:var(--rust);}
 
@@ -142,6 +143,19 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .nak-meta{font-size:0.62rem;color:var(--text-light);letter-spacing:0.03em;margin:2px 0 5px;}
 .nak-def{font-size:0.75rem;color:var(--text-dim);line-height:1.65;}
 .nak-yours-tag{display:inline-block;background:var(--rust);color:#fff;font-size:0.58rem;letter-spacing:0.05em;text-transform:uppercase;border-radius:8px;padding:2px 8px;margin-bottom:5px;}
+.jc-highlight-alex{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--text);margin:14px 0 0;padding:14px 16px;border-left:3px solid var(--rose);background:var(--rose-bg);border-radius:0 8px 8px 0;line-height:1.7;}
+.index-link{color:var(--sage);border-bottom:1px dashed var(--sage-light);cursor:pointer;}
+.sb-tap{cursor:pointer;border-radius:5px;padding:1px 3px;margin:0 -3px;transition:background 0.15s;}
+.sb-tap:hover{background:rgba(0,0,0,0.04);}
+.sb-hint{font-size:0.55rem;color:var(--text-light);text-align:center;margin-top:2px;letter-spacing:0.05em;opacity:0.7;}
+/* Explainer modal */
+.pex-overlay{display:none;position:fixed;inset:0;background:rgba(50,40,25,0.4);z-index:300;align-items:center;justify-content:center;padding:16px;}
+.pex-overlay.open{display:flex;}
+.pex-card{background:var(--card);border-radius:16px;padding:22px 22px 18px;max-width:460px;width:100%;max-height:86vh;overflow-y:auto;box-shadow:0 8px 40px rgba(60,40,20,0.25);border-top:3px solid var(--rose);}
+.pex-close{float:right;background:none;border:none;color:var(--text-light);font-size:1.2rem;cursor:pointer;}
+.pex-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--text);margin-bottom:4px;}
+.pex-coords{font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--rust);margin-bottom:12px;}
+.pex-body{font-size:0.8rem;color:var(--text-dim);line-height:1.8;}
 </style>
 </head>
 <body>
@@ -152,21 +166,24 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   <div class="sb-name">Alex<br>Johnson</div>
   <nav class="sb-nav">
     <button onclick="showPage('today')" class="active" data-page="today">✦ Today + Calendar</button>
+    <button onclick="showPage('story')" data-page="story">✎ Your Story</button>
     <button onclick="showPage('astro')" data-page="astro">✺ Your Chart</button>
     <button onclick="showPage('hd')" data-page="hd">◈ Human Design</button>
     <button onclick="showPage('nakshatras')" data-page="nakshatras">☾ Nakshatras</button>
+    <button onclick="showPage('index')" data-page="index">📖 Index</button>
   </nav>
   <hr class="sb-divider">
   <div class="sb-chart">
-    <div><b>Rising:</b> Virgo · Hasta, Pada 4</div>
-    <div><b>Sun/Merc/Ven/Mars:</b> Taurus (9th)</div>
-    <div><b>Moon:</b> Aquarius (6th)</div>
-    <div><b>Jupiter+Saturn:</b> Aries (8th)</div>
-    <div><b>Rahu:</b> Cancer (11th)</div>
-    <div><b>HD:</b> Manifesting Generator</div>
-    <div><b>Authority:</b> Emotional</div>
-    <div><b>Profile:</b> 6/2</div>
+    <div class="sb-tap" onclick="openExplainer('rising')"><b>Rising:</b> Virgo · Hasta, Pada 4</div>
+    <div class="sb-tap" onclick="openExplainer('stellium')"><b>Sun/Merc/Ven/Mars:</b> Taurus (9th)</div>
+    <div class="sb-tap" onclick="openExplainer('moon')"><b>Moon:</b> Aquarius (6th)</div>
+    <div class="sb-tap" onclick="openExplainer('jupsat')"><b>Jupiter+Saturn:</b> Aries (8th)</div>
+    <div class="sb-tap" onclick="openExplainer('rahu')"><b>Rahu:</b> Cancer (11th)</div>
+    <div class="sb-tap" onclick="openExplainer('hdtype')"><b>HD:</b> Manifesting Generator</div>
+    <div class="sb-tap" onclick="openExplainer('authority')"><b>Authority:</b> Emotional</div>
+    <div class="sb-tap" onclick="openExplainer('profile')"><b>Profile:</b> 6/2</div>
   </div>
+  <div class="sb-hint">tap any placement to learn more</div>
   <button class="today-btn" onclick="goToday()">↑ Jump to Today</button>
 </aside>
 
@@ -181,7 +198,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
           <div class="tc-date" id="tc-date">—</div>
           <div class="tc-moon" id="tc-moon"></div>
         </div>
-        <div class="streak-badge" id="streak-badge">🔥 0 day streak</div>
       </div>
       <div class="tc-blurb" id="tc-blurb">—</div>
       <div class="go-deeper-toggle" id="tc-deeper-toggle" onclick="toggleDeeper(this)"><span class="arrow">▸</span> A bit more, if you're curious</div>
@@ -195,9 +211,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       </div>
     </div>
 
+    <div class="streak-card">
+      <div class="streak-badge" id="streak-badge">🔥 0 day streak</div>
+      <div class="streak-strip" id="streakStrip"></div>
+    </div>
+
     <div class="section-heading">This Month</div>
     <div id="calMount" class="cal-wrap"></div>
-    <div class="streak-strip" id="streakStrip"></div>
   </div>
 
   <!-- ASTROLOGY / CHART PAGE -->
@@ -209,20 +229,28 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="stat-chip"><div class="stat-chip-label">Current Dasha</div><div class="stat-chip-value" id="astro-dasha">—</div></div>
     </div>
     <div class="info-card">
+      <h4>Virgo Rising, Hasta Nakshatra — Your Identity</h4>
+      <p>Virgo Rising, ruled by Mercury, gives you precision, discernment, and a quietly capable presence — you notice what others miss. Hasta ("the hand") is Moon-ruled: the healing hand, skilled and restorative, working through direct, practical service rather than grand gesture. Pada 4 (the final quarter of Hasta) leans toward the material and grounded expression of that skill — competence you can point to, not just talk about.</p>
+    </div>
+    <div class="info-card">
       <h4>The Taurus Stellium — Your 9th House</h4>
-      <p>Four planets — Sun, Mercury, Venus, and Mars — all sit in Taurus, in your 9th house of dharma, philosophy, and higher belief. This is the single loudest signature in your entire chart. Your sense of purpose isn't abstract or borrowed — it's earned through the senses, through the body, through what you can actually touch and trust. Venus here, in the sign it rules, gives you an unusually strong, natural relationship to beauty — what you're drawn to visually and aesthetically is a real compass, not a distraction.</p>
+      <p>Four planets — Sun, Mercury, Venus, and Mars — all sit in Taurus, in your 9th house of dharma, philosophy, and higher belief. This is the single loudest signature in your entire chart. Your sense of purpose isn't abstract or borrowed — it's earned through the senses, through the body, through what you can actually touch and trust. Venus here, in the sign it rules, gives you an unusually strong, natural relationship to beauty — what you're drawn to visually and aesthetically is a real compass, not a distraction. Mars in Taurus channels drive into patient, material persistence rather than impulsive action.</p>
     </div>
     <div class="info-card">
       <h4>Jupiter + Saturn in Aries — Your 8th House</h4>
-      <p>Expansion and discipline sit together in your house of transformation. This is demanding — Aries wants to move fast, the 8th house asks you to go deep and slow. The tension between them is where your realest growth happens.</p>
+      <p>Expansion and discipline sit together in your house of transformation. This is demanding — Aries wants to move fast, the 8th house asks you to go deep and slow. The tension between them is where your realest growth happens: Jupiter wants to believe the change is already here, Saturn insists you actually earn it first. Trust the friction, not just one side of it.</p>
     </div>
     <div class="info-card">
       <h4>Moon in Aquarius, Dhanishta — Your 6th House</h4>
-      <p>Your emotional world processes through rhythm, routine, and community-minded care. Dhanishta ("the drum") carries a beat-driven, generous quality — you're emotionally nourished by contributing to something shared.</p>
+      <p>Your emotional world processes through rhythm, routine, and community-minded care. Dhanishta ("the drum") carries a beat-driven, generous quality — you're emotionally nourished by contributing to something shared, not by solitary introspection. In the 6th house of daily work and health, this means your emotional stability is directly tied to whether your daily rhythm actually serves you.</p>
     </div>
     <div class="info-card">
       <h4>Rahu in Cancer, Pushya — Your 11th House</h4>
-      <p>Your evolutionary edge is community built on real nourishment and care — not networking, actual tending. Pushya is considered one of the most auspicious nakshatras: "the nourisher."</p>
+      <p>Your evolutionary edge is community built on real nourishment and care — not networking, actual tending. Pushya is considered one of the most auspicious nakshatras: "the nourisher." Rahu here amplifies a hunger to belong to something that genuinely feeds people, and your 11th house of income and community desires runs through that lens.</p>
+    </div>
+    <div class="info-card">
+      <h4>Ketu in Capricorn — Your 5th House</h4>
+      <p>Past-life mastery in structure, discipline, and achievement. Creative and personal-goal work that feels oddly easy to you — trust that ease, it's earned, not accidental.</p>
     </div>
   </div>
 
@@ -236,15 +264,34 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     </div>
     <div class="info-card">
       <h4>Manifesting Generator</h4>
-      <p>You have sustainable, renewable Sacral energy (Generator) AND a direct connection from that energy to your Throat (Manifestor) — the rare combination that makes you fast, multi-passionate, and built to move quickly once you're clear. Strategy: respond first, then inform the people it affects. The frustration MGs feel isn't from moving fast — it's from waiting around when you don't need to.</p>
+      <p>You have sustainable, renewable Sacral energy (Generator) AND a direct connection from that energy to your Throat (Manifestor) — the rare combination that makes you fast, multi-passionate, and built to move quickly once you're clear. Strategy: respond first, then inform the people it affects. The frustration MGs feel isn't from moving fast — it's from waiting around when you don't need to. Signature when it's working: satisfaction and peace, moving at your own real speed. Not-self theme when it's off: frustration and anger from either being slowed down or from skipping steps that actually mattered.</p>
     </div>
     <div class="info-card">
       <h4>Emotional Authority</h4>
-      <p>There is no "now" for you when it comes to big decisions. Clarity isn't available in the moment — it arrives after your emotional wave moves through, sometimes over days. The discipline isn't suppressing the excitement or the doubt, it's riding the wave without deciding at either peak.</p>
+      <p>There is no "now" for you when it comes to big decisions. Clarity isn't available in the moment — it arrives after your emotional wave moves through, sometimes over days. The discipline isn't suppressing the excitement or the doubt, it's riding the wave without deciding at either peak. Sleep on it, more than once if needed. The answer that's still true a few days later is the real one.</p>
     </div>
     <div class="info-card">
       <h4>Profile 6/2 — Role Model | Hermit</h4>
       <p>Line 6: you're here to live an example others can learn from, but the 6-line life has three phases — trial and error in your first ~30 years, a rooftop period of observing from a distance, then living as the role model once you've integrated what you learned. Line 2: you have natural, genuine gifts that don't need forcing. Your best work often happens when you're pulled out of solitude by someone who genuinely sees your talent — not when you chase visibility yourself.</p>
+    </div>
+    <div class="info-card">
+      <h4>Split Definition — 5 Defined Centers</h4>
+      <p>Your defined centers: <b style="color:var(--text)">Throat, Sacral, Root, Solar Plexus, Heart</b>. Split into two separate groups, bridged only by specific channels — meaning a real part of your consistent energy needs the right connection to feel complete. That's not a flaw, it's how your design is built: you're genuinely more whole in the right company, not less independent for needing it.</p>
+    </div>
+    <div class="info-card">
+      <h4>Your Defined Channels</h4>
+      <p><b style="color:var(--text)">20–34, Channel of Charisma</b> (Throat–Sacral): the ability to respond and act instantly, in the moment, without needing to plan first. People feel your presence as immediate and real.</p>
+      <p><b style="color:var(--text)">37–40, Channel of Community</b> (Solar Plexus–Heart): belonging through mutual agreements and support — you show up for people, and the bond is real when it's reciprocal.</p>
+      <p><b style="color:var(--text)">19–49, Channel of Synthesis</b> (Root–Solar Plexus): sensitivity to what others need to feel resourced and supported — an instinct for what a relationship or group actually requires to hold together.</p>
+    </div>
+    <div class="info-card">
+      <h4>Incarnation Cross — Gates 20/34, 6/36</h4>
+      <p>Built from your Personality and Design Sun/Earth gates. This is the broadest theme of your life's work — immediate, embodied action (Gate 20/34) in service of navigating and holding real emotional friction well (Gate 6/36). Read together with your Emotional Authority: your path isn't about avoiding intensity, it's about moving through it skillfully, then acting fast once you're clear.</p>
+    </div>
+    <div class="info-card" style="border-left:3px solid var(--rust);">
+      <h4>Where Human Design + Vedic Astrology Agree</h4>
+      <p>Defined Sacral + Throat (MG) + your Taurus stellium in the 9th: your body knows what it believes before your mind can fully articulate it — and once it knows, you move fast. Both systems say the same thing: trust the response, not the overthinking.</p>
+      <p>Emotional Authority + Moon in Aquarius 6th (Dhanishta): your emotional wave and your daily rhythm are deeply linked — a day out of rhythm is a day where your emotional clarity gets harder to access.</p>
     </div>
   </div>
 
@@ -254,7 +301,93 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.8;margin-bottom:16px;">Nakshatras are the 27 "lunar mansions" of Vedic astrology — each one a 13°20' slice of the zodiac, more precise than sign alone. Where your Moon and Rising sign fall within these gives your chart real texture. Yours are highlighted below.</p>
     <div class="nak-grid" id="nakGrid"></div>
   </div>
+
+  <!-- STORY PAGE -->
+  <div class="page-section" id="page-story">
+    <div class="section-heading">Your Story</div>
+    <div class="info-card">
+      <p>You show up in the world through Virgo — precise, competent, the hand that fixes what's actually broken rather than performing concern about it. Hasta nakshatra makes that literal: healing and skill move through you by direct, practical service, not by talking about it. Pada 4 grounds all of that in the material — you want results you can point to.</p>
+      <p>But the real center of gravity in your chart isn't your Rising sign. It's the stellium: Sun, Mercury, Venus, and Mars, all sitting together in Taurus, in your 9th house of dharma and belief. Four planets agreeing on the same thing is rare, and what they agree on is this — your sense of purpose has to be earned through the senses. Not read about, not borrowed from someone else's conviction. Felt, touched, trusted with your own hands. Venus here, ruling the sign it sits in, means your relationship to beauty isn't decoration on top of your life. It's one of your actual instruments for finding truth.</p>
+      <p>Underneath that is a harder conversation: Jupiter and Saturn, sitting together in Aries, in your 8th house of transformation. This is not a comfortable placement, and it isn't supposed to be. Aries wants to move now. The 8th house insists that real transformation takes time, takes facing what's actually underneath. You carry both of these at once — the urge to leap, and the knowledge that the leap only means something if you've done the deeper work first. That tension isn't a flaw in your chart. It's where your most durable growth actually happens, every time you let both sides speak instead of picking one.</p>
+      <p>Your Moon in Aquarius, in Dhanishta nakshatra, in your 6th house, tells you where your emotional stability actually lives: in rhythm, in daily practice, in showing up for something shared. Dhanishta is the drum — a beat-driven, generous placement, an emotional world that's nourished by contribution rather than solitude. When your days have real rhythm, you feel steady. When they don't, that's usually the first thing to check.</p>
+      <p>Rahu in Cancer, in Pushya nakshatra — "the nourisher," one of the most auspicious placements in the entire system — sits in your 11th house of community and desire. Your evolutionary pull, the thing you're growing toward whether you've named it yet or not, is a community built on real care. Not networking. Tending. And Ketu in Capricorn, in your 5th house, gives you an odd, earned ease in structured creative and personal-goal work — a past-life fluency you don't have to force.</p>
+      <p>Then there's your design: a Manifesting Generator with Emotional Authority, Profile 6/2. You are built to move fast once you're clear — Sacral energy connected directly to your Throat means your body knows and your voice can say it almost in the same breath. But "once you're clear" is the whole game for you, because Emotional Authority means clarity is never available in the moment. It arrives after the wave moves through. Your 6th Line means you're here to eventually live as a genuine example — but only after your own trial-and-error years, and a real period of stepping back to actually observe before you're ready. Your 2nd Line says the gift was never something you had to force; it's something the right person, at the right time, pulls you out of solitude to use.</p>
+      <div class="jc-highlight-alex">Put together: you are someone whose deepest convictions are earned through the body, whose growth happens in the friction between moving fast and going deep, whose emotional ground is rhythm and real contribution, and whose gifts are most alive when someone who actually sees you calls them forward. Nothing about that needs to be rushed. It's already working exactly as it was built to.</div>
+    </div>
+  </div>
+
+  <!-- INDEX PAGE -->
+  <div class="page-section" id="page-index">
+    <div class="section-heading">Index</div>
+    <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.8;margin-bottom:16px;">Everything you need to understand what you're reading in your planner — and why it matters for how you actually live.</p>
+    <div class="info-card">
+      <h4>Rising Sign (Lagna)</h4>
+      <p>The zodiac sign on the eastern horizon at your exact moment of birth. In Jyotish, this is the most important point in the chart — it determines your 12 houses and your chart ruler. <b style="color:var(--text)">Yours: Virgo, Hasta nakshatra, Pada 4.</b></p>
+    </div>
+    <div class="info-card">
+      <h4>Houses</h4>
+      <p>The 12 divisions of the birth chart, each governing a life domain — from identity (1st) through career (10th) to community (11th) and inner life (12th). Your Rising sign determines which sign occupies each house for you.</p>
+    </div>
+    <div class="info-card">
+      <h4>Nakshatra</h4>
+      <p>27 lunar mansions, each 13°20' of the zodiac — more precise than sign alone, describing the exact texture of how a planet expresses. See the full <span class="index-link" onclick="showPage('nakshatras')">27-nakshatra reference →</span></p>
+    </div>
+    <div class="info-card">
+      <h4>Vimshottari Dasha</h4>
+      <p>The Vedic system of planetary time-periods that governs your life in chapters, timed from your Moon's exact nakshatra at birth. Tells you which planet's energy is most dominant in your life right now.</p>
+    </div>
+    <div class="info-card">
+      <h4>Stellium</h4>
+      <p>Three or more planets in the same house. Yours: Sun, Mercury, Venus, and Mars, all in Taurus, in your 9th house — the loudest single signature in your chart.</p>
+    </div>
+    <div class="info-card">
+      <h4>Exaltation / Own Sign</h4>
+      <p>When a planet is in the sign it rules or is exalted in, it operates at unusually high natural strength. Your Venus is in Taurus — the sign it rules — giving you a strong, natural relationship to beauty and aesthetics.</p>
+    </div>
+    <div class="info-card">
+      <h4>Retrograde (Vakri)</h4>
+      <p>A planet appears to move backward from Earth's perspective. Retrograde transits are considered intensified and internalized — a signal to review and revisit rather than launch something new.</p>
+    </div>
+    <div class="info-card">
+      <h4>Rahu + Ketu (The Nodes)</h4>
+      <p>The north and south lunar nodes. Rahu (north) is desire and evolutionary growth — where you're pulled toward. Ketu (south) is release and past mastery. Yours: Rahu in Cancer, Pushya, 11th house; Ketu in Capricorn, 5th house.</p>
+    </div>
+    <div class="info-card">
+      <h4>New Moon / Full Moon</h4>
+      <p>New moons are seeding points for a new ~29.5-day cycle. Full moons are illumination or completion points. The house they fall in for you shows what's being planted or revealed.</p>
+    </div>
+    <div class="info-card">
+      <h4>Transit</h4>
+      <p>A planet's current position in the sky, as opposed to its position at your birth. When a transiting planet lands on one of your natal placements, that part of your chart activates.</p>
+    </div>
+    <div class="info-card">
+      <h4>Human Design Type</h4>
+      <p>Your energetic strategy for engaging the world. Five types exist: Generator, Manifesting Generator, Projector, Manifestor, Reflector. <b style="color:var(--text)">Yours: Manifesting Generator.</b></p>
+    </div>
+    <div class="info-card">
+      <h4>Inner Authority</h4>
+      <p>How you actually make aligned decisions, distinct from how you think you should. <b style="color:var(--text)">Yours: Emotional</b> — clarity arrives after your emotional wave settles, never in the moment.</p>
+    </div>
+    <div class="info-card">
+      <h4>Profile</h4>
+      <p>Two numbers (1–6) describing your life theme — one from your Personality Sun's line, one from your Design Sun's line. <b style="color:var(--text)">Yours: 6/2, Role Model | Hermit.</b></p>
+    </div>
+    <div class="info-card">
+      <h4>Definition (Split, Single, etc.)</h4>
+      <p>How your defined centers cluster together. <b style="color:var(--text)">Yours: Split Definition</b> — two separate groups, most whole when bridged by the right connection.</p>
+    </div>
+  </div>
 </main>
+</div>
+
+<!-- PLANET EXPLAINER MODAL -->
+<div class="pex-overlay" id="pexModal" onclick="if(event.target===this)closePex()">
+  <div class="pex-card">
+    <button class="pex-close" onclick="closePex()">✕</button>
+    <div class="pex-title" id="pex-title">—</div>
+    <div class="pex-coords" id="pex-coords"></div>
+    <div class="pex-body" id="pex-body"></div>
+  </div>
 </div>
 
 <!-- DAY MODAL -->
@@ -264,7 +397,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="modal-date" id="md-date">—</div>
     <div class="modal-dow" id="md-dow"></div>
     <div id="md-kd"></div>
-    <div id="md-overview"></div>
+    <div id="md-recap"></div>
+    <div class="modal-section">
+      <div class="modal-toggle" onclick="toggleModalSection(this)"><span>Energy of the Day, expanded</span><span class="arrow">▸</span></div>
+      <div class="modal-toggle-body" id="md-energy"></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-toggle" onclick="toggleModalSection(this)"><span>Do's + Don'ts</span><span class="arrow">▸</span></div>
+      <div class="modal-toggle-body" id="md-dosdonts"></div>
+    </div>
     <div class="modal-section">
       <div class="modal-toggle" onclick="toggleModalSection(this)"><span>Mood + Journal</span><span class="arrow">▸</span></div>
       <div class="modal-toggle-body">
@@ -409,24 +550,72 @@ function plainConjunctionClause(transiting,natalPlanet,sign){
   const verb=transiting.length>1?'are':'is';
   return `${subj} ${verb} landing on your natal ${cap(natalPlanet)} today (both in ${sign}) — expect ${n} to feel unusually direct`;
 }
+const NAKSHATRA_ONE_LINE={
+  'Ashwini':'swift, pioneering energy','Bharani':'intensity and the courage to carry something through','Krittika':'sharp, purifying clarity',
+  'Rohini':'sensual, growth-oriented magnetism','Mrigashirsha':'searching, gentle curiosity','Ardra':'stormy, transformative intensity',
+  'Punarvasu':'renewal, the return of light','Pushya':'nourishing, protective care','Ashlesha':'penetrating psychological insight',
+  'Magha':'royal, ancestral power','Purva Phalguni':'pleasure and creative ease','Uttara Phalguni':'generous, sustaining warmth',
+  'Hasta':'the healing hand — precise, restorative presence','Chitra':'a singular creative spark','Swati':'independent, self-directed movement',
+  'Vishakha':'patient AND intensely goal-driven','Anuradha':'devotion and loyalty over time','Jyeshtha':'protective seniority',
+  'Mula':'root-level clearing','Purva Ashadha':'early, unshakeable conviction','Uttara Ashadha':'lasting, universal achievement',
+  'Shravana':'deep listening','Dhanishta':'rhythm, generosity, a beat-driven pull toward others','Shatabhisha':'unconventional, wide-ranging healing',
+  'Purva Bhadrapada':'fiery, transformative spirituality','Uttara Bhadrapada':'deep stillness, patient wisdom','Revati':'nourishing arrival, homecoming',
+};
+const HD_HONOR_TEXT = {
+  return: 'How to honor it: as a Manifesting Generator with Emotional Authority, use today to notice how your body responds rather than deciding anything big — let today\'s clarity be information, not a verdict.',
+  conjunction: 'How to work with it: feel it, don\'t act on it yet — ride the emotional wave before you respond, then move fast once you\'re clear. That\'s the whole MG strategy in one sentence.',
+  quiet: 'A good day to notice what you\'re genuinely excited to respond to, then inform the people it affects once you move.',
+};
+const HOUSE_DOS_DONTS = {
+  1:{dos:'Make a choice about how you show up today — body, presentation, identity.',donts:'Don\'t let today\'s mood become a permanent story about who you are.'},
+  2:{dos:'Look honestly at what you earn and what you value.',donts:'Don\'t confuse fairness with settling.'},
+  3:{dos:'Say the true thing, briefly.',donts:'Don\'t over-explain to soften it.'},
+  4:{dos:'Tend your actual home or inner foundation.',donts:'Don\'t skip rest to keep performing.'},
+  5:{dos:'Make something — even something small and unserious.',donts:'Don\'t judge the first draft.'},
+  6:{dos:'Honor your natal Moon here — tend a routine, a body need, a community task.',donts:'Don\'t skip your rhythm because something \'more important\' came up.'},
+  7:{dos:'Let a partnership be exactly as intuitive/soft as it wants to be.',donts:'Don\'t force logic onto a feeling-based connection.'},
+  8:{dos:'Face one real thing in the domain of transformation — your natal Jupiter/Saturn live here.',donts:'Don\'t rush the depth work just because Aries wants speed.'},
+  9:{dos:'Trust a belief that\'s been earned through your senses, not borrowed from someone else — this touches your stellium.',donts:'Don\'t mistake other people\'s conviction for your own.'},
+  10:{dos:'Take one visible step in your public direction.',donts:'Don\'t hide the work you\'re actually proud of.'},
+  11:{dos:'Reach toward the community/desire that feels magnetic — your natal Rahu lives here.',donts:'Don\'t network from scarcity; tend, don\'t chase.'},
+  12:{dos:'Give your inner world real space today.',donts:'Don\'t mistake solitude for falling behind.'},
+};
+function dayDosDonts(dateStr){
+  const day=EPHEMERIS.daily[dateStr]; if(!day) return null;
+  const hd=HOUSE_DOS_DONTS[day.moon.house];
+  const authorityLine = 'As Emotional Authority: don\'t decide anything big today from either the excitement or the doubt — wait for the wave to settle.';
+  return {dos:hd.dos, donts:hd.donts, authorityLine};
+}
+function dayRecap(dateStr){
+  const day=EPHEMERIS.daily[dateStr]; if(!day) return '';
+  const returns=findReturns(day), conjunctions=findConjunctions(day);
+  if(returns.includes('moon')) return `Your Lunar Return — a monthly personal reset.`;
+  if(returns.length) return `Your ${cap(returns[0])} Return is exact today.`;
+  const targets=Object.keys(conjunctions);
+  if(targets.length) return `${conjunctions[targets[0]].map(cap).join(' + ')} activating your natal ${cap(targets[0])}.`;
+  return `Moon in ${day.moon.sign}, your ${ordinal(day.moon.house)} house.`;
+}
 function plainDailyReading(dateStr){
   const day=EPHEMERIS.daily[dateStr]; if(!day) return null;
   const dasha=dashaContextFor(dateStr);
-  const moonSign=day.moon.sign, moonHouse=day.moon.house;
+  const moonSign=day.moon.sign, moonHouse=day.moon.house, moonNak=day.moon.nakshatra;
   const returns=findReturns(day), conjunctions=findConjunctions(day);
   const md=getMoonData(dateStr);
-  let headline = `The Moon is in ${moonSign} today, moving through your ${ordinal(moonHouse)} house — ${MOON_HOUSE_WHY[moonHouse]}.`;
-  let deeper=[], featured=null;
-  if(returns.includes('moon')){ headline += ' ' + RETURN_TEXT.moon(moonSign); }
-  else if(returns.length){ const p=returns[0]; headline += ' ' + (RETURN_TEXT[p]?RETURN_TEXT[p](day[p].sign):`Your ${cap(p)} Return is exact today.`); }
+  let headline = `The Moon is in ${moonSign} today (${moonNak} nakshatra — ${NAKSHATRA_ONE_LINE[moonNak]||''}), moving through your ${ordinal(moonHouse)} house — ${MOON_HOUSE_WHY[moonHouse]}.`;
+  let deeper=[], featured=null, storyType='quiet';
+  if(returns.includes('moon')){ headline += ' ' + RETURN_TEXT.moon(moonSign); storyType='return'; }
+  else if(returns.length){ const p=returns[0]; headline += ' ' + (RETURN_TEXT[p]?RETURN_TEXT[p](day[p].sign):`Your ${cap(p)} Return is exact today.`); storyType='return'; }
   else {
     const priority=['sun','moon','saturn','jupiter','mars','mercury','venus','rahu','ketu'];
     const targets=Object.keys(conjunctions).sort((a,b)=>priority.indexOf(a)-priority.indexOf(b));
     if(targets.length){ featured=targets[0]; const sign=day[conjunctions[featured][0]].sign;
       headline += ' ' + cap(plainConjunctionClause(conjunctions[featured],featured,sign)) + '.';
+      storyType='conjunction';
     }
   }
-  deeper.push({label:'Moon detail', body:`${md.phaseName} in ${moonSign}, ${md.illum}% illuminated.`});
+  if(dasha) headline += ` You're in your ${dasha.mahadasha} Mahadasha, ${dasha.antardasha} Antardasha — this house's themes are coming through that lens right now.`;
+  headline += ' ' + HD_HONOR_TEXT[storyType];
+  deeper.push({label:'Moon detail', body:`${md.phaseName} in ${moonSign}, ${moonNak} nakshatra pada ${day.moon.pada}, ${md.illum}% illuminated.`});
   for(const np of Object.keys(conjunctions)){
     if(np===featured) continue;
     const sign=day[conjunctions[np][0]].sign;
@@ -455,8 +644,8 @@ function touchStreak(){
   saveStreakState(s);
   return s;
 }
-function renderStreak(){
-  const s=touchStreak();
+function renderStreakDisplay(){
+  const s=getStreakState();
   document.getElementById('streak-badge').textContent = `🔥 ${s.count} day streak`;
   const strip=document.getElementById('streakStrip'); strip.innerHTML='';
   const days=[]; const d=new Date();
@@ -505,11 +694,12 @@ function buildToday(){
     const checked=state['todo-'+ds+'-'+i];
     return `<li class="${checked?'done':''}" onclick="toggleTodo('${ds}',${i},this)"><input type="checkbox" ${checked?'checked':''}><label>${t}</label></li>`;
   }).join('');
-  renderStreak();
+  renderStreakDisplay();
 }
 function toggleTodo(ds,idx,li){
   const cb=li.querySelector('input'); cb.checked=!cb.checked; li.classList.toggle('done');
   const state=getState(); state['todo-'+ds+'-'+idx]=cb.checked; saveState(state);
+  if(cb.checked && ds===getTodayStr()){ touchStreak(); renderStreakDisplay(); }
 }
 
 // ── CALENDAR ──
@@ -544,8 +734,15 @@ function openDay(ds){
   document.getElementById('md-dow').textContent=days[d.getDay()];
   const kd=KEY_DATES[ds];
   document.getElementById('md-kd').innerHTML=kd?`<div class="modal-kd"><b>${kd.title}</b><div>${kd.body}</div></div>`:'';
+  document.getElementById('md-recap').innerHTML=`<div style="font-size:0.82rem;color:var(--text-dim);line-height:1.6;font-family:'Cormorant Garamond',serif;font-size:1rem;">${dayRecap(ds)}</div>`;
   const reading=plainDailyReading(ds);
-  document.getElementById('md-overview').innerHTML=reading?`<div style="font-size:0.8rem;color:var(--text-dim);line-height:1.75;">${reading.headline}</div>`:'';
+  document.getElementById('md-energy').innerHTML=reading?renderDeeperHTML([{label:'Full picture',body:reading.headline}, ...reading.deeper]):'';
+  const dd=dayDosDonts(ds);
+  document.getElementById('md-dosdonts').innerHTML=dd?`
+    <div class="deeper-item"><div class="deeper-item-label">Do</div><div class="deeper-item-body">${dd.dos}</div></div>
+    <div class="deeper-item"><div class="deeper-item-label">Don't</div><div class="deeper-item-body">${dd.donts}</div></div>
+    <div class="deeper-item"><div class="deeper-item-label">Your Authority</div><div class="deeper-item-body">${dd.authorityLine}</div></div>
+  `:'';
   const state=getState();
   document.getElementById('md-moods').innerHTML=['😊','😌','😔','😤','😴'].map(m=>`<button class="mood-btn ${state['mood-'+ds]===m?'active':''}" onclick="setMood('${m}',this)">${m}</button>`).join('');
   document.getElementById('md-notes').value=state['note-'+ds]||'';
@@ -554,8 +751,13 @@ function openDay(ds){
 function closeModal(){ document.getElementById('dayModal').classList.remove('open'); }
 function setMood(m,btn){ document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
   const state=getState(); state['mood-'+currentDay]=m; saveState(state);
+  if(currentDay===getTodayStr()){ touchStreak(); renderStreakDisplay(); }
 }
-function saveDay(){ const state=getState(); state['note-'+currentDay]=document.getElementById('md-notes').value; saveState(state); closeModal(); buildCal(); }
+function saveDay(){
+  const state=getState(); state['note-'+currentDay]=document.getElementById('md-notes').value; saveState(state);
+  if(currentDay===getTodayStr()){ touchStreak(); renderStreakDisplay(); }
+  closeModal(); buildCal();
+}
 function toggleModalSection(el){ el.classList.toggle('open'); const body=el.nextElementSibling; if(body) body.classList.toggle('open'); }
 
 // ── NAV ──
@@ -572,6 +774,34 @@ function toggleSidebar(force){
   sb.classList.toggle('mobile-open');
 }
 function goToday(){ showPage('today'); }
+
+// ── SIDEBAR PLANET EXPLAINER ──
+const EXPLAINER = {
+  rising:{ title:'Virgo Rising · Hasta Nakshatra, Pada 4', coords:'1st House · Chart Ruler: Mercury',
+    body:'Virgo Rising, ruled by Mercury, gives you precision, discernment, and quiet competence — you notice what others miss, and your presence has a restorative quality. Hasta ("the hand") is Moon-ruled: healing through direct, practical service rather than performance. Pada 4 leans material and grounded — you want results you can actually point to, not just talk about.' },
+  stellium:{ title:'Sun, Mercury, Venus, Mars in Taurus', coords:'9th House · Dharma + Philosophy',
+    body:'Four planets in the same sign and house is rare, and this is the loudest signature in your entire chart. Your sense of purpose is earned through the senses — through the body, through what you can touch and trust — not borrowed from someone else\'s belief. Venus here, in the sign it rules, gives you an unusually strong, natural relationship to beauty; it\'s a real compass for you, not decoration. Mars in Taurus channels drive into patient, material persistence.' },
+  moon:{ title:'Moon in Aquarius · Dhanishta', coords:'6th House · Health + Daily Rhythm',
+    body:'Your emotional world runs on rhythm and community-minded care. Dhanishta ("the drum") carries a beat-driven, generous quality — you\'re nourished by contributing to something shared, not by solitary introspection. In the 6th house, your emotional stability is directly tied to whether your daily routine actually serves you.' },
+  jupsat:{ title:'Jupiter + Saturn in Aries', coords:'8th House · Transformation',
+    body:'Expansion and discipline sitting together in the house of transformation. Aries wants to move now; the 8th house insists real change takes time. That tension is uncomfortable by design — it\'s also exactly where your most durable growth happens, every time you let both sides speak instead of picking one.' },
+  rahu:{ title:'Rahu in Cancer · Pushya', coords:'11th House · Community + Desire',
+    body:'Pushya ("the nourisher") is considered one of the most auspicious nakshatras in the entire system. Your evolutionary pull is toward a community built on real care, not networking. Your 11th house of income and desire runs through that lens — what you\'re building toward should actually feed people.' },
+  hdtype:{ title:'Manifesting Generator', coords:'Human Design · Type',
+    body:'Sustainable Sacral energy connected directly to your Throat — the combination that makes you fast and multi-passionate. Strategy: respond first, then inform whoever it affects. Your frustration doesn\'t come from moving fast; it comes from being slowed down, or from skipping a step that actually mattered.' },
+  authority:{ title:'Emotional Authority', coords:'Human Design · Inner Authority',
+    body:'There is no "now" for big decisions. Clarity isn\'t available in the moment — it arrives after your emotional wave moves through, sometimes over days. The discipline is riding the wave without deciding at either peak. Sleep on it more than once if you need to.' },
+  profile:{ title:'Profile 6/2 · Role Model | Hermit', coords:'Human Design · Profile',
+    body:'Line 6: you\'re here to eventually live as an example others learn from — but only after your own trial-and-error years and a real rooftop period of stepping back to observe. Line 2: your gifts are natural, not forced, and often called forward by someone who genuinely sees them, not by you chasing visibility.' },
+};
+function openExplainer(key){
+  const d=EXPLAINER[key]; if(!d) return;
+  document.getElementById('pex-title').textContent=d.title;
+  document.getElementById('pex-coords').textContent=d.coords;
+  document.getElementById('pex-body').textContent=d.body;
+  document.getElementById('pexModal').classList.add('open');
+}
+function closePex(){ document.getElementById('pexModal').classList.remove('open'); }
 
 // ── NAKSHATRA REFERENCE (all 27) ──
 const NAKSHATRA_REF=[
