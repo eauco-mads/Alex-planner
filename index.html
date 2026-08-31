@@ -83,7 +83,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 /* ── SECTION HEADINGS ── */
 .section-heading{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:var(--text);margin:26px 0 12px;display:flex;align-items:center;gap:8px;}
-.section-heading::before{content:'';display:inline-block;width:16px;height:16px;background:var(--gold);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z'/%3E%3C/svg%3E") center/contain no-repeat;flex-shrink:0;}
+.heading-glyph{flex-shrink:0;}
+.hint-blurb{font-size:0.68rem;color:var(--text-light);font-style:italic;margin:-4px 0 12px;display:flex;align-items:center;gap:5px;}
 .reflect-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
 .reflect-chip{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:6px 13px;font-size:0.72rem;color:var(--text-dim);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;}
 .reflect-chip:hover{border-color:var(--sage-light);}
@@ -179,16 +180,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .pex-body{font-size:0.8rem;color:var(--text-dim);line-height:1.8;}
 /* Bodygraph */
 .bodygraph-card{text-align:center;}
-.bodygraph-svg{width:100%;max-width:280px;height:auto;margin:8px auto;}
-.bg-channel{stroke:var(--border);stroke-width:6;}
-.bg-channel.defined{stroke:var(--rust);}
-.bg-center{fill:var(--card2);stroke:var(--border);stroke-width:1.5;}
-.bg-center[data-defined="true"]{fill:var(--sage);stroke:var(--sage);}
-.bg-label{font-size:9px;fill:var(--text-dim);text-anchor:middle;font-family:'Inter',sans-serif;}
-.bg-label-inv{fill:#fff;font-weight:500;}
-.bg-legend{font-size:0.65rem;color:var(--text-light);margin-top:6px;}
+.bodygraph-svg{width:100%;max-width:220px;height:auto;margin:8px auto;display:block;}
+.bg-center-shape{cursor:pointer;transition:opacity 0.15s;}
+.bg-center-shape:hover{opacity:0.8;}
+.bg-legend{font-size:0.65rem;color:var(--text-light);margin-top:10px;}
 .bg-legend-dot{display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--card2);border:1.5px solid var(--border);vertical-align:middle;margin-right:3px;}
-.bg-legend-dot.defined{background:var(--sage);border-color:var(--sage);}
+.bg-legend-dot.defined{background:var(--rust);border-color:var(--rust);}
 </style>
 </head>
 <body>
@@ -255,13 +252,14 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       <button class="streak-done-btn" id="streak-done-btn" onclick="markTodayDone()">Mark today done</button>
     </div>
 
-    <div class="section-heading">This Month</div>
+    <div class="section-heading"><svg class="heading-glyph" width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>This Month</div>
+    <div class="hint-blurb">✧ tap any day to see what's happening for you, in depth</div>
     <div id="calMount" class="cal-wrap"></div>
   </div>
 
   <!-- ASTROLOGY / CHART PAGE -->
   <div class="page-section" id="page-astro">
-    <div class="section-heading">Your Chart</div>
+    <div class="section-heading"><svg class="heading-glyph" width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>Your Chart</div>
     <div class="stat-chips">
       <div class="stat-chip"><div class="stat-chip-label">Rising</div><div class="stat-chip-value">Virgo</div></div>
       <div class="stat-chip"><div class="stat-chip-label">Nakshatra</div><div class="stat-chip-value">Hasta, Pada 4</div></div>
@@ -297,7 +295,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
   <!-- HUMAN DESIGN PAGE -->
   <div class="page-section" id="page-hd">
-    <div class="section-heading">Human Design</div>
+    <div class="section-heading"><svg class="heading-glyph" width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>Human Design</div>
     <div class="stat-chips">
       <div class="stat-chip"><div class="stat-chip-label">Type</div><div class="stat-chip-value">Manifesting Generator</div></div>
       <div class="stat-chip"><div class="stat-chip-label">Authority</div><div class="stat-chip-value">Emotional</div></div>
@@ -305,31 +303,34 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     </div>
     <div class="info-card bodygraph-card">
       <h4>Your Bodygraph</h4>
-      <svg viewBox="0 0 300 480" class="bodygraph-svg">
-        <line x1="150" y1="150" x2="150" y2="330" class="bg-channel defined"/>
-        <line x1="215" y1="240" x2="235" y2="310" class="bg-channel defined"/>
-        <line x1="150" y1="420" x2="235" y2="310" class="bg-channel defined"/>
-        <polygon points="150,15 175,55 125,55" class="bg-center" data-defined="false"/>
-        <polygon points="150,65 175,105 125,105" class="bg-center" data-defined="false"/>
-        <rect x="130" y="128" width="40" height="40" class="bg-center" data-defined="true"/>
-        <polygon points="150,195 175,220 150,245 125,220" class="bg-center" data-defined="false"/>
-        <polygon points="200,215 235,235 200,255" class="bg-center" data-defined="true"/>
-        <polygon points="90,275 65,310 95,325" class="bg-center" data-defined="false"/>
-        <rect x="130" y="305" width="40" height="40" class="bg-center" data-defined="true"/>
-        <polygon points="235,285 260,310 220,330" class="bg-center" data-defined="true"/>
-        <rect x="130" y="400" width="40" height="40" class="bg-center" data-defined="true"/>
-        <text x="150" y="40" class="bg-label">Head</text>
-        <text x="150" y="90" class="bg-label">Ajna</text>
-        <text x="150" y="152" class="bg-label bg-label-inv">Throat</text>
-        <text x="150" y="223" class="bg-label">G</text>
-        <text x="217" y="238" class="bg-label bg-label-inv">Heart</text>
-        <text x="80" y="303" class="bg-label">Spleen</text>
-        <text x="150" y="329" class="bg-label bg-label-inv">Sacral</text>
-        <text x="240" y="308" class="bg-label bg-label-inv">Solar Plexus</text>
-        <text x="150" y="423" class="bg-label bg-label-inv">Root</text>
+      <div class="hint-blurb" style="justify-content:center;">✧ tap any part to learn what it means for you</div>
+      <svg viewBox="0 0 240 340" class="bodygraph-svg">
+        <!-- CHANNELS (your 3 defined ones) -->
+        <line x1="120" y1="130" x2="120" y2="198" stroke="var(--rust)" stroke-width="5" stroke-linecap="round"/>
+        <line x1="158" y1="159" x2="185" y2="215" stroke="var(--rust)" stroke-width="5" stroke-linecap="round"/>
+        <line x1="120" y1="266" x2="185" y2="224" stroke="var(--rust)" stroke-width="5" stroke-linecap="round"/>
+        <!-- OPEN CENTERS -->
+        <polygon points="120,10 90,52 150,52" class="bg-center-shape" fill="var(--card2)" stroke="var(--border)" stroke-width="1.5" onclick="openCenterInfo('head')"/>
+        <text x="120" y="41" text-anchor="middle" font-size="7.5" fill="var(--text-light)" font-family="Inter,sans-serif" pointer-events="none">HEAD</text>
+        <polygon points="120,92 90,56 150,56" class="bg-center-shape" fill="var(--card2)" stroke="var(--border)" stroke-width="1.5" onclick="openCenterInfo('ajna')"/>
+        <text x="120" y="73" text-anchor="middle" font-size="7.5" fill="var(--text-light)" font-family="Inter,sans-serif" pointer-events="none">AJNA</text>
+        <polygon points="120,132 146,158 120,184 94,158" class="bg-center-shape" fill="var(--card2)" stroke="var(--border)" stroke-width="1.5" onclick="openCenterInfo('g')"/>
+        <text x="120" y="162" text-anchor="middle" font-size="8" fill="var(--text-light)" font-family="Inter,sans-serif" pointer-events="none">G</text>
+        <polygon points="48,206 80,224 48,242" class="bg-center-shape" fill="var(--card2)" stroke="var(--border)" stroke-width="1.5" onclick="openCenterInfo('spleen')"/>
+        <text x="60" y="228" text-anchor="middle" font-size="5.5" fill="var(--text-light)" font-family="Inter,sans-serif" pointer-events="none">SPLEEN</text>
+        <!-- DEFINED CENTERS -->
+        <rect x="96" y="100" width="48" height="30" rx="4" class="bg-center-shape" fill="var(--rust)" onclick="openCenterInfo('throat')"/>
+        <text x="120" y="119" text-anchor="middle" font-size="7.5" fill="white" font-family="Inter,sans-serif" font-weight="600" pointer-events="none">THROAT</text>
+        <polygon points="152,140 172,148 164,170 144,162" class="bg-center-shape" fill="var(--rust-light)" onclick="openCenterInfo('heart')"/>
+        <text x="158" y="159" text-anchor="middle" font-size="6.5" fill="white" font-family="Inter,sans-serif" font-weight="600" pointer-events="none">♡</text>
+        <rect x="90" y="198" width="60" height="46" rx="4" class="bg-center-shape" fill="var(--rust)" onclick="openCenterInfo('sacral')"/>
+        <text x="120" y="225" text-anchor="middle" font-size="7.5" fill="white" font-family="Inter,sans-serif" font-weight="600" pointer-events="none">SACRAL</text>
+        <polygon points="197,206 163,224 197,242" class="bg-center-shape" fill="var(--rust-light)" onclick="openCenterInfo('solarplexus')"/>
+        <text x="188" y="229" text-anchor="middle" font-size="5.5" fill="white" font-family="Inter,sans-serif" font-weight="600" pointer-events="none">SX</text>
+        <rect x="92" y="250" width="56" height="32" rx="4" class="bg-center-shape" fill="var(--rust)" onclick="openCenterInfo('root')"/>
+        <text x="120" y="271" text-anchor="middle" font-size="7.5" fill="white" font-family="Inter,sans-serif" font-weight="600" pointer-events="none">ROOT</text>
       </svg>
       <div class="bg-legend"><span class="bg-legend-dot defined"></span> Defined (consistent energy) &nbsp; <span class="bg-legend-dot"></span> Open (where you take in others' energy)</div>
-      <p style="margin-top:10px;">Defined: Throat, Sacral, Root, Solar Plexus, Heart. Open: Head, Ajna, G, Spleen — not weaknesses, just where you're naturally wise to others' input rather than fixed in your own view.</p>
     </div>
     <div class="info-card">
       <h4>Manifesting Generator</h4>
@@ -368,22 +369,22 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
   <!-- NAKSHATRAS PAGE -->
   <div class="page-section" id="page-nakshatras">
-    <div class="section-heading">The 27 Nakshatras</div>
-    <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.8;margin-bottom:14px;">Nakshatras are the 27 "lunar mansions" of Vedic astrology — each one a 13°20' slice of the zodiac, more precise than sign alone. Every one of your planets — not just your Moon and Rising — falls in one, and each is highlighted below with the pada (quarter) it lands in.</p>
+    <div class="section-heading"><svg class="heading-glyph" width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>The 27 Nakshatras</div>
+    <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.8;margin-bottom:14px;">Nakshatras are 27 little "zoom-in" slices of the zodiac — way more specific than just knowing your sign. Every single one of your planets lands in one, not just your Moon and Rising, and they're all highlighted below with the exact pada (quarter) each one falls in.</p>
     <div class="info-card" style="margin-bottom:16px;">
-      <h4>What's a Pada?</h4>
-      <p>Each nakshatra is further divided into 4 padas (quarters), each about 3°20' wide. Traditionally, each pada is linked to one of the four aims of life:</p>
-      <p><b style="color:var(--text)">Pada 1</b> — linked to Dharma, purpose and right action. The most direct, initiating quarter of the nakshatra.</p>
-      <p><b style="color:var(--text)">Pada 2</b> — linked to Artha, resources and material means. Turning purpose into something tangible and built.</p>
-      <p><b style="color:var(--text)">Pada 3</b> — linked to Kama, desire, pleasure, and relationship. Where the nakshatra's energy connects outward to others.</p>
-      <p><b style="color:var(--text)">Pada 4</b> — linked to Moksha, release and integration. The most refined, complete expression of the nakshatra before it hands off to the next.</p>
+      <h4>Wait, what's a pada?</h4>
+      <p>Each nakshatra actually splits into 4 mini-quarters called padas. Think of them as the "which chapter of this story am I in" marker — traditionally each one is tied to one of the four big aims of life:</p>
+      <p><b style="color:var(--text)">Pada 1</b> — Dharma. Purpose, doing the right thing. The most straight-up, get-going quarter.</p>
+      <p><b style="color:var(--text)">Pada 2</b> — Artha. Resources, making it real. Turning purpose into something you can actually hold.</p>
+      <p><b style="color:var(--text)">Pada 3</b> — Kama. Desire, pleasure, connection. Where this energy starts reaching out toward other people.</p>
+      <p><b style="color:var(--text)">Pada 4</b> — Moksha. Letting go, integrating. The most settled, wisest version of this nakshatra before it hands things off to the next one.</p>
     </div>
     <div class="nak-grid" id="nakGrid"></div>
   </div>
 
   <!-- STORY PAGE -->
   <div class="page-section" id="page-story">
-    <div class="section-heading">Your Story</div>
+    <div class="section-heading"><svg class="heading-glyph" width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>Your Story</div>
     <div class="story-block story-sage">
       <div class="story-block-label">✦ How You Show Up</div>
       <p>You show up in the world through Virgo — precise, competent, the hand that fixes what's actually broken rather than performing concern about it. Hasta nakshatra makes that literal: healing and skill move through you by direct, practical service, not by talking about it. Pada 4 grounds all of that in the material — you want results you can point to.</p>
@@ -415,63 +416,63 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
   <!-- INDEX PAGE -->
   <div class="page-section" id="page-index">
-    <div class="section-heading">Index</div>
-    <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.8;margin-bottom:16px;">Everything you need to understand what you're reading in your planner — and why it matters for how you actually live.</p>
+    <div class="section-heading"><svg class="heading-glyph" width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>Index</div>
+    <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.8;margin-bottom:16px;">Think of this as your cheat sheet — the words you'll keep running into around this planner, explained like a friend would explain them, not a textbook.</p>
     <div class="info-card">
       <h4>Rising Sign (Lagna)</h4>
-      <p>The zodiac sign on the eastern horizon at your exact moment of birth. In Jyotish, this is the most important point in the chart — it determines your 12 houses and your chart ruler. <b style="color:var(--text)">Yours: Virgo, Hasta nakshatra, Pada 4.</b></p>
+      <p>Whatever sign was rising on the horizon the second you were born. It's honestly the MVP of your whole chart — it sets up all 12 of your houses and decides who your "chart ruler" planet is. <b style="color:var(--text)">Yours is Virgo, in Hasta nakshatra, Pada 4.</b></p>
     </div>
     <div class="info-card">
       <h4>Houses</h4>
-      <p>The 12 divisions of the birth chart, each governing a life domain — from identity (1st) through career (10th) to community (11th) and inner life (12th). Your Rising sign determines which sign occupies each house for you.</p>
+      <p>Your chart gets split into 12 "rooms," and each one covers a different part of life — identity, money, home, career, community, all of it. Which sign sits in which room for you is decided entirely by your Rising sign.</p>
     </div>
     <div class="info-card">
       <h4>Nakshatra</h4>
-      <p>27 lunar mansions, each 13°20' of the zodiac — more precise than sign alone, describing the exact texture of how a planet expresses. See the full <span class="index-link" onclick="showPage('nakshatras')">27-nakshatra reference →</span></p>
+      <p>27 little zoomed-in slices of the zodiac — way more specific than just "your sign." This is where the real texture and flavor of a placement lives. Go check out the <span class="index-link" onclick="showPage('nakshatras')">full nakshatra page →</span> to see all of yours.</p>
     </div>
     <div class="info-card">
       <h4>Vimshottari Dasha</h4>
-      <p>The Vedic system of planetary time-periods that governs your life in chapters, timed from your Moon's exact nakshatra at birth. Tells you which planet's energy is most dominant in your life right now.</p>
+      <p>The chapter system of your life. Every few years you move into a new "era" ruled by a different planet, and it's all timed off your Moon's exact placement at birth. Basically: which planet is running the show for you right now.</p>
     </div>
     <div class="info-card">
       <h4>Stellium</h4>
-      <p>Three or more planets in the same house. Yours: Sun, Mercury, Venus, and Mars, all in Taurus, in your 9th house — the loudest single signature in your chart.</p>
+      <p>When three or more planets pile up in the same house — it's rare, and it's loud. Yours: Sun, Mercury, Venus, and Mars, all crammed into Taurus in your 9th house. That's the single biggest theme in your whole chart.</p>
     </div>
     <div class="info-card">
       <h4>Exaltation / Own Sign</h4>
-      <p>When a planet is in the sign it rules or is exalted in, it operates at unusually high natural strength. Your Venus is in Taurus — the sign it rules — giving you a strong, natural relationship to beauty and aesthetics.</p>
+      <p>Every planet has a sign where it just... works better. More power, less effort. Your Venus happens to be sitting in the sign it actually rules (Taurus) — so your eye for beauty isn't a nice-to-have, it's one of your real strengths.</p>
     </div>
     <div class="info-card">
       <h4>Retrograde (Vakri)</h4>
-      <p>A planet appears to move backward from Earth's perspective. Retrograde transits are considered intensified and internalized — a signal to review and revisit rather than launch something new.</p>
+      <p>When a planet looks like it's moving backward from where we're standing on Earth (it's not, it's an optical thing). Traditionally read as a "pump the brakes" signal — a good window to revisit and rework instead of launching something brand new.</p>
     </div>
     <div class="info-card">
       <h4>Rahu + Ketu (The Nodes)</h4>
-      <p>The north and south lunar nodes. Rahu (north) is desire and evolutionary growth — where you're pulled toward. Ketu (south) is release and past mastery. Yours: Rahu in Cancer, Pushya, 11th house; Ketu in Capricorn, 5th house.</p>
+      <p>Two points that are always exactly opposite each other. Rahu is the pull toward what's next — a little hungry, very growth-oriented. Ketu is the stuff you've already mastered and are ready to let go of. <b style="color:var(--text)">Yours: Rahu in Cancer (Pushya, 11th house), Ketu in Capricorn (5th house).</b></p>
     </div>
     <div class="info-card">
       <h4>New Moon / Full Moon</h4>
-      <p>New moons are seeding points for a new ~29.5-day cycle. Full moons are illumination or completion points. The house they fall in for you shows what's being planted or revealed.</p>
+      <p>New moons are for planting something — a fresh ~29.5-day cycle starting from zero. Full moons are for seeing clearly, or wrapping something up. Whichever house they land in for you tells you what part of life is getting planted or revealed.</p>
     </div>
     <div class="info-card">
       <h4>Transit</h4>
-      <p>A planet's current position in the sky, as opposed to its position at your birth. When a transiting planet lands on one of your natal placements, that part of your chart activates.</p>
+      <p>Wherever a planet actually is in the sky right now, as opposed to where it was the day you were born. When something transiting lines up with one of your natal placements, that part of your chart lights up.</p>
     </div>
     <div class="info-card">
       <h4>Human Design Type</h4>
-      <p>Your energetic strategy for engaging the world. Five types exist: Generator, Manifesting Generator, Projector, Manifestor, Reflector. <b style="color:var(--text)">Yours: Manifesting Generator.</b></p>
+      <p>Your basic strategy for moving through the world — there are five types (Generator, Manifesting Generator, Projector, Manifestor, Reflector), each with a different way of engaging that actually works *for them*. <b style="color:var(--text)">Yours: Manifesting Generator.</b></p>
     </div>
     <div class="info-card">
       <h4>Inner Authority</h4>
-      <p>How you actually make aligned decisions, distinct from how you think you should. <b style="color:var(--text)">Yours: Emotional</b> — clarity arrives after your emotional wave settles, never in the moment.</p>
+      <p>How you're actually built to make decisions — not how you think you're supposed to. <b style="color:var(--text)">Yours is Emotional</b>, which means real clarity only shows up after your emotional wave has had time to settle. Never in the moment. Don't fight that.</p>
     </div>
     <div class="info-card">
       <h4>Profile</h4>
-      <p>Two numbers (1–6) describing your life theme — one from your Personality Sun's line, one from your Design Sun's line. <b style="color:var(--text)">Yours: 6/2, Role Model | Hermit.</b></p>
+      <p>Two numbers, 1 through 6, that sketch out your life theme — one comes from your Personality Sun, one from your Design Sun. <b style="color:var(--text)">Yours is 6/2 — Role Model, Hermit.</b></p>
     </div>
     <div class="info-card">
       <h4>Definition (Split, Single, etc.)</h4>
-      <p>How your defined centers cluster together. <b style="color:var(--text)">Yours: Split Definition</b> — two separate groups, most whole when bridged by the right connection.</p>
+      <p>How your "on" centers actually connect to each other. <b style="color:var(--text)">Yours is Split Definition</b> — two separate little groups instead of one big connected one. You genuinely feel more whole around the right person, and that's not a flaw, it's just how you're wired.</p>
     </div>
   </div>
 </main>
@@ -925,6 +926,35 @@ function openExplainer(key){
   document.getElementById('pexModal').classList.add('open');
 }
 function closePex(){ document.getElementById('pexModal').classList.remove('open'); }
+
+// ── BODYGRAPH CENTER INFO (warm, friend-to-friend tone) ──
+const CENTER_INFO = {
+  head:{ title:'Head Center', coords:'Open in your design',
+    body:'This is where questions and inspiration live. Yours is open, which just means you don\'t hold onto one fixed way of thinking — you soak up whatever\'s in the air around you. Good news: you\'re naturally open-minded. Watch-for: in the wrong company, other people\'s mental pressure can start to feel like your own. It\'s not.' },
+  ajna:{ title:'Ajna Center', coords:'Open in your design',
+    body:'This is the "how you process and make sense of things" center. Open here means you\'re flexible in how you think — you can see it from a bunch of angles instead of being locked into one opinion. That\'s a real gift for someone who\'s meant to be a role model eventually (hi, Line 6). Just don\'t let someone else\'s certainty talk you out of your own gut.' },
+  g:{ title:'G Center (Identity)', coords:'Open in your design',
+    body:'This is the "who am I, where am I going" center. Yours being open sounds scary but honestly isn\'t — it means your sense of self and direction is meant to shift and grow with the people and places you spend time in. You\'re not supposed to have it all figured out at 25. You find yourself through your life, not before it.' },
+  spleen:{ title:'Spleen Center', coords:'Open in your design',
+    body:'This is your instinct and body-wisdom center — the "something feels off" alarm. Open here means you\'re incredibly perceptive about other people\'s fears and instincts, sometimes more than your own. The thing to watch: you might hang onto things (people, habits, situations) past when your gut already told you it was time to go.' },
+  throat:{ title:'Throat Center — Defined ✦', coords:'Consistently "on" for you',
+    body:'This is the center for speaking and doing — turning what\'s inside you into something the world can actually see. Yours is defined, which means you have a reliable, consistent way of expressing yourself. People know what to expect from you here. It\'s part of what makes you an MG: your body knows, and your voice can say it almost instantly.' },
+  heart:{ title:'Heart / Ego Center — Defined ✦', coords:'Consistently "on" for you',
+    body:'This is about willpower, self-worth, and keeping your word. Defined means you have consistent access to drive and follow-through when something genuinely matters to you — you don\'t need to talk yourself into it every single time. This is also the "community" side of you: you show up when you\'ve agreed to show up.' },
+  sacral:{ title:'Sacral Center — Defined ✦', coords:'Consistently "on" for you — your life force',
+    body:'This is your engine. Defined Sacral means you have real, sustainable, renewable life-force energy — this is the big one that makes you a Generator at your core. It\'s the "uh-huh" or "nuh-uh" in your gut before your brain even catches up. Trust it before you trust your own overthinking.' },
+  solarplexus:{ title:'Solar Plexus Center — Defined ✦', coords:'Consistently "on" for you — your Authority',
+    body:'This is your emotional wave, and it\'s also your Inner Authority — the thing that actually decides for you. Defined means your emotions run in a real, consistent rhythm rather than randomly. The catch: you don\'t get clarity in the moment, ever. Give it time. The wave will bring you the real answer if you let it finish.' },
+  root:{ title:'Root Center — Defined ✦', coords:'Consistently "on" for you',
+    body:'This is your pressure center — the drive to get things done and move forward. Defined means you have a steady, reliable source of that get-it-done pressure, instead of it coming and going unpredictably. It\'s part of why you can move fast once your Sacral and your wave are both clear.' },
+};
+function openCenterInfo(key){
+  const d=CENTER_INFO[key]; if(!d) return;
+  document.getElementById('pex-title').textContent=d.title;
+  document.getElementById('pex-coords').textContent=d.coords;
+  document.getElementById('pex-body').textContent=d.body;
+  document.getElementById('pexModal').classList.add('open');
+}
 
 // ── NAKSHATRA REFERENCE (all 27) ──
 const NAKSHATRA_REF=[
