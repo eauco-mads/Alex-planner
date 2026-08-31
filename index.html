@@ -10,19 +10,22 @@
   --bg:          #F7F2EA;
   --card:        #FFFFFF;
   --card2:       #F1EBDE;
-  --sage:        #6E7D5F;
-  --sage-light:  #A9B89C;
-  --sage-bg:     #EEF1E7;
-  --rose:        #C08B7A;
-  --rose-light:  #E3C4B8;
-  --rose-bg:     #FBF1EC;
-  --rust:        #B5562F;
-  --rust-light:  #D98F6C;
-  --text:        #3A3A2E;
-  --text-dim:    #5C5C4A;
-  --text-light:  #8A8A76;
-  --border:      #E4DDC9;
-  --shadow:      rgba(60,50,30,0.08);
+  --sage:        #4F6142;
+  --sage-light:  #8FA678;
+  --sage-bg:     #E7EEDF;
+  --rose:        #C97B65;
+  --rose-light:  #E3AA96;
+  --rose-bg:     #FBEAE2;
+  --rust:        #C4451F;
+  --rust-light:  #E07B4C;
+  --gold:        #D4952A;
+  --gold-light:  #F0C878;
+  --gold-bg:     #FBF0DC;
+  --text:        #2E2E22;
+  --text-dim:    #52523F;
+  --text-light:  #83836C;
+  --border:      #DED2AE;
+  --shadow:      rgba(60,50,30,0.10);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -79,7 +82,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .today-todos li.done label{text-decoration:line-through;color:var(--text-light);}
 
 /* ── SECTION HEADINGS ── */
-.section-heading{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:var(--text);margin:26px 0 12px;}
+.section-heading{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:var(--text);margin:26px 0 12px;display:flex;align-items:center;gap:8px;}
+.section-heading::before{content:'';display:inline-block;width:16px;height:16px;background:var(--gold);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0l2.5 8.5L23 11l-8.5 2.5L12 22l-2.5-8.5L1 11l8.5-2.5z'/%3E%3C/svg%3E") center/contain no-repeat;flex-shrink:0;}
+.reflect-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+.reflect-chip{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:6px 13px;font-size:0.72rem;color:var(--text-dim);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;}
+.reflect-chip:hover{border-color:var(--sage-light);}
+.reflect-chip.active{background:var(--sage);border-color:var(--sage);color:#fff;}
+.reflect-prompt-label{font-size:0.68rem;letter-spacing:0.04em;color:var(--text-light);margin-top:14px;margin-bottom:2px;text-transform:uppercase;}
 .glyph-divider{text-align:center;color:var(--text-light);font-size:0.65rem;letter-spacing:0.2em;margin:22px 0;}
 
 /* ── CALENDAR ── */
@@ -147,6 +156,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .nak-def{font-size:0.75rem;color:var(--text-dim);line-height:1.65;}
 .nak-yours-tag{display:inline-block;background:var(--rust);color:#fff;font-size:0.58rem;letter-spacing:0.05em;text-transform:uppercase;border-radius:8px;padding:2px 8px;margin-bottom:5px;}
 .jc-highlight-alex{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--text);margin:14px 0 0;padding:14px 16px;border-left:3px solid var(--rose);background:var(--rose-bg);border-radius:0 8px 8px 0;line-height:1.7;}
+.story-block{border-radius:12px;padding:16px 18px;margin-bottom:10px;box-shadow:0 1px 8px var(--shadow);}
+.story-block p{font-size:0.82rem;color:var(--text-dim);line-height:1.85;}
+.story-block-label{font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;margin-bottom:7px;}
+.story-block.story-sage{background:var(--sage-bg);}
+.story-block.story-sage .story-block-label{color:var(--sage);}
+.story-block.story-rose{background:var(--rose-bg);}
+.story-block.story-rose .story-block-label{color:var(--rust);}
+.story-block.story-gold{background:var(--gold-bg);}
+.story-block.story-gold .story-block-label{color:#96690f;}
 .index-link{color:var(--sage);border-bottom:1px dashed var(--sage-light);cursor:pointer;}
 .sb-tap{cursor:pointer;border-radius:5px;padding:1px 3px;margin:0 -3px;transition:background 0.15s;}
 .sb-tap:hover{background:rgba(0,0,0,0.04);}
@@ -159,6 +177,18 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .pex-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--text);margin-bottom:4px;}
 .pex-coords{font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--rust);margin-bottom:12px;}
 .pex-body{font-size:0.8rem;color:var(--text-dim);line-height:1.8;}
+/* Bodygraph */
+.bodygraph-card{text-align:center;}
+.bodygraph-svg{width:100%;max-width:280px;height:auto;margin:8px auto;}
+.bg-channel{stroke:var(--border);stroke-width:6;}
+.bg-channel.defined{stroke:var(--rust);}
+.bg-center{fill:var(--card2);stroke:var(--border);stroke-width:1.5;}
+.bg-center[data-defined="true"]{fill:var(--sage);stroke:var(--sage);}
+.bg-label{font-size:9px;fill:var(--text-dim);text-anchor:middle;font-family:'Inter',sans-serif;}
+.bg-label-inv{fill:#fff;font-weight:500;}
+.bg-legend{font-size:0.65rem;color:var(--text-light);margin-top:6px;}
+.bg-legend-dot{display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--card2);border:1.5px solid var(--border);vertical-align:middle;margin-right:3px;}
+.bg-legend-dot.defined{background:var(--sage);border-color:var(--sage);}
 </style>
 </head>
 <body>
@@ -178,10 +208,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   <hr class="sb-divider">
   <div class="sb-chart">
     <div class="sb-tap" onclick="openExplainer('rising')"><b>Rising:</b> Virgo · Hasta, Pada 4</div>
-    <div class="sb-tap" onclick="openExplainer('stellium')"><b>Sun/Merc/Ven/Mars:</b> Taurus (9th)</div>
-    <div class="sb-tap" onclick="openExplainer('moon')"><b>Moon:</b> Aquarius (6th)</div>
-    <div class="sb-tap" onclick="openExplainer('jupsat')"><b>Jupiter+Saturn:</b> Aries (8th)</div>
-    <div class="sb-tap" onclick="openExplainer('rahu')"><b>Rahu:</b> Cancer (11th)</div>
+    <div class="sb-tap" onclick="openExplainer('sun')"><b>Sun:</b> Taurus · Rohini, Pada 1 (9th)</div>
+    <div class="sb-tap" onclick="openExplainer('mercury')"><b>Mercury:</b> Taurus · Mrigashirsha, Pada 2 (9th)</div>
+    <div class="sb-tap" onclick="openExplainer('venus')"><b>Venus:</b> Taurus · Krittika, Pada 4 (9th)</div>
+    <div class="sb-tap" onclick="openExplainer('mars')"><b>Mars:</b> Taurus · Rohini, Pada 4 (9th)</div>
+    <div class="sb-tap" onclick="openExplainer('moon')"><b>Moon:</b> Aquarius · Dhanishta, Pada 4 (6th)</div>
+    <div class="sb-tap" onclick="openExplainer('jupiter')"><b>Jupiter:</b> Aries · Krittika, Pada 1 (8th)</div>
+    <div class="sb-tap" onclick="openExplainer('saturn')"><b>Saturn:</b> Aries · Krittika, Pada 1 (8th)</div>
+    <div class="sb-tap" onclick="openExplainer('rahu')"><b>Rahu:</b> Cancer · Pushya, Pada 1 (11th)</div>
+    <div class="sb-tap" onclick="openExplainer('ketu')"><b>Ketu:</b> Capricorn · U.Ashadha, Pada 3 (5th)</div>
     <div class="sb-tap" onclick="openExplainer('hdtype')"><b>HD:</b> Manifesting Generator</div>
     <div class="sb-tap" onclick="openExplainer('authority')"><b>Authority:</b> Emotional</div>
     <div class="sb-tap" onclick="openExplainer('profile')"><b>Profile:</b> 6/2</div>
@@ -256,6 +291,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       <h4>Ketu in Capricorn — Your 5th House</h4>
       <p>Past-life mastery in structure, discipline, and achievement. Creative and personal-goal work that feels oddly easy to you — trust that ease, it's earned, not accidental.</p>
     </div>
+    <div class="reflect-prompt-label">Which placement do you want to sit with today?</div>
+    <div class="reflect-chips" id="astroReflectChips"></div>
   </div>
 
   <!-- HUMAN DESIGN PAGE -->
@@ -265,6 +302,34 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="stat-chip"><div class="stat-chip-label">Type</div><div class="stat-chip-value">Manifesting Generator</div></div>
       <div class="stat-chip"><div class="stat-chip-label">Authority</div><div class="stat-chip-value">Emotional</div></div>
       <div class="stat-chip"><div class="stat-chip-label">Profile</div><div class="stat-chip-value">6/2</div></div>
+    </div>
+    <div class="info-card bodygraph-card">
+      <h4>Your Bodygraph</h4>
+      <svg viewBox="0 0 300 480" class="bodygraph-svg">
+        <line x1="150" y1="150" x2="150" y2="330" class="bg-channel defined"/>
+        <line x1="215" y1="240" x2="235" y2="310" class="bg-channel defined"/>
+        <line x1="150" y1="420" x2="235" y2="310" class="bg-channel defined"/>
+        <polygon points="150,15 175,55 125,55" class="bg-center" data-defined="false"/>
+        <polygon points="150,65 175,105 125,105" class="bg-center" data-defined="false"/>
+        <rect x="130" y="128" width="40" height="40" class="bg-center" data-defined="true"/>
+        <polygon points="150,195 175,220 150,245 125,220" class="bg-center" data-defined="false"/>
+        <polygon points="200,215 235,235 200,255" class="bg-center" data-defined="true"/>
+        <polygon points="90,275 65,310 95,325" class="bg-center" data-defined="false"/>
+        <rect x="130" y="305" width="40" height="40" class="bg-center" data-defined="true"/>
+        <polygon points="235,285 260,310 220,330" class="bg-center" data-defined="true"/>
+        <rect x="130" y="400" width="40" height="40" class="bg-center" data-defined="true"/>
+        <text x="150" y="40" class="bg-label">Head</text>
+        <text x="150" y="90" class="bg-label">Ajna</text>
+        <text x="150" y="152" class="bg-label bg-label-inv">Throat</text>
+        <text x="150" y="223" class="bg-label">G</text>
+        <text x="217" y="238" class="bg-label bg-label-inv">Heart</text>
+        <text x="80" y="303" class="bg-label">Spleen</text>
+        <text x="150" y="329" class="bg-label bg-label-inv">Sacral</text>
+        <text x="240" y="308" class="bg-label bg-label-inv">Solar Plexus</text>
+        <text x="150" y="423" class="bg-label bg-label-inv">Root</text>
+      </svg>
+      <div class="bg-legend"><span class="bg-legend-dot defined"></span> Defined (consistent energy) &nbsp; <span class="bg-legend-dot"></span> Open (where you take in others' energy)</div>
+      <p style="margin-top:10px;">Defined: Throat, Sacral, Root, Solar Plexus, Heart. Open: Head, Ajna, G, Spleen — not weaknesses, just where you're naturally wise to others' input rather than fixed in your own view.</p>
     </div>
     <div class="info-card">
       <h4>Manifesting Generator</h4>
@@ -297,27 +362,55 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       <p>Defined Sacral + Throat (MG) + your Taurus stellium in the 9th: your body knows what it believes before your mind can fully articulate it — and once it knows, you move fast. Both systems say the same thing: trust the response, not the overthinking.</p>
       <p>Emotional Authority + Moon in Aquarius 6th (Dhanishta): your emotional wave and your daily rhythm are deeply linked — a day out of rhythm is a day where your emotional clarity gets harder to access.</p>
     </div>
+    <div class="reflect-prompt-label">How's your wave today?</div>
+    <div class="reflect-chips" id="hdReflectChips"></div>
   </div>
 
   <!-- NAKSHATRAS PAGE -->
   <div class="page-section" id="page-nakshatras">
     <div class="section-heading">The 27 Nakshatras</div>
-    <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.8;margin-bottom:16px;">Nakshatras are the 27 "lunar mansions" of Vedic astrology — each one a 13°20' slice of the zodiac, more precise than sign alone. Where your Moon and Rising sign fall within these gives your chart real texture. Yours are highlighted below.</p>
+    <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.8;margin-bottom:14px;">Nakshatras are the 27 "lunar mansions" of Vedic astrology — each one a 13°20' slice of the zodiac, more precise than sign alone. Every one of your planets — not just your Moon and Rising — falls in one, and each is highlighted below with the pada (quarter) it lands in.</p>
+    <div class="info-card" style="margin-bottom:16px;">
+      <h4>What's a Pada?</h4>
+      <p>Each nakshatra is further divided into 4 padas (quarters), each about 3°20' wide. Traditionally, each pada is linked to one of the four aims of life:</p>
+      <p><b style="color:var(--text)">Pada 1</b> — linked to Dharma, purpose and right action. The most direct, initiating quarter of the nakshatra.</p>
+      <p><b style="color:var(--text)">Pada 2</b> — linked to Artha, resources and material means. Turning purpose into something tangible and built.</p>
+      <p><b style="color:var(--text)">Pada 3</b> — linked to Kama, desire, pleasure, and relationship. Where the nakshatra's energy connects outward to others.</p>
+      <p><b style="color:var(--text)">Pada 4</b> — linked to Moksha, release and integration. The most refined, complete expression of the nakshatra before it hands off to the next.</p>
+    </div>
     <div class="nak-grid" id="nakGrid"></div>
   </div>
 
   <!-- STORY PAGE -->
   <div class="page-section" id="page-story">
     <div class="section-heading">Your Story</div>
-    <div class="info-card">
+    <div class="story-block story-sage">
+      <div class="story-block-label">✦ How You Show Up</div>
       <p>You show up in the world through Virgo — precise, competent, the hand that fixes what's actually broken rather than performing concern about it. Hasta nakshatra makes that literal: healing and skill move through you by direct, practical service, not by talking about it. Pada 4 grounds all of that in the material — you want results you can point to.</p>
-      <p>But the real center of gravity in your chart isn't your Rising sign. It's the stellium: Sun, Mercury, Venus, and Mars, all sitting together in Taurus, in your 9th house of dharma and belief. Four planets agreeing on the same thing is rare, and what they agree on is this — your sense of purpose has to be earned through the senses. Not read about, not borrowed from someone else's conviction. Felt, touched, trusted with your own hands. Venus here, ruling the sign it sits in, means your relationship to beauty isn't decoration on top of your life. It's one of your actual instruments for finding truth.</p>
-      <p>Underneath that is a harder conversation: Jupiter and Saturn, sitting together in Aries, in your 8th house of transformation. This is not a comfortable placement, and it isn't supposed to be. Aries wants to move now. The 8th house insists that real transformation takes time, takes facing what's actually underneath. You carry both of these at once — the urge to leap, and the knowledge that the leap only means something if you've done the deeper work first. That tension isn't a flaw in your chart. It's where your most durable growth actually happens, every time you let both sides speak instead of picking one.</p>
-      <p>Your Moon in Aquarius, in Dhanishta nakshatra, in your 6th house, tells you where your emotional stability actually lives: in rhythm, in daily practice, in showing up for something shared. Dhanishta is the drum — a beat-driven, generous placement, an emotional world that's nourished by contribution rather than solitude. When your days have real rhythm, you feel steady. When they don't, that's usually the first thing to check.</p>
-      <p>Rahu in Cancer, in Pushya nakshatra — "the nourisher," one of the most auspicious placements in the entire system — sits in your 11th house of community and desire. Your evolutionary pull, the thing you're growing toward whether you've named it yet or not, is a community built on real care. Not networking. Tending. And Ketu in Capricorn, in your 5th house, gives you an odd, earned ease in structured creative and personal-goal work — a past-life fluency you don't have to force.</p>
-      <p>Then there's your design: a Manifesting Generator with Emotional Authority, Profile 6/2. You are built to move fast once you're clear — Sacral energy connected directly to your Throat means your body knows and your voice can say it almost in the same breath. But "once you're clear" is the whole game for you, because Emotional Authority means clarity is never available in the moment. It arrives after the wave moves through. Your 6th Line means you're here to eventually live as a genuine example — but only after your own trial-and-error years, and a real period of stepping back to actually observe before you're ready. Your 2nd Line says the gift was never something you had to force; it's something the right person, at the right time, pulls you out of solitude to use.</p>
-      <div class="jc-highlight-alex">Put together: you are someone whose deepest convictions are earned through the body, whose growth happens in the friction between moving fast and going deep, whose emotional ground is rhythm and real contribution, and whose gifts are most alive when someone who actually sees you calls them forward. Nothing about that needs to be rushed. It's already working exactly as it was built to.</div>
     </div>
+    <div class="story-block story-rose">
+      <div class="story-block-label">✦ Your Center of Gravity</div>
+      <p>The real center of gravity in your chart isn't your Rising sign. It's the stellium: Sun, Mercury, Venus, and Mars, all sitting together in Taurus, in your 9th house of dharma and belief. Four planets agreeing on the same thing is rare, and what they agree on is this — your sense of purpose has to be earned through the senses. Not read about, not borrowed from someone else's conviction. Felt, touched, trusted with your own hands. Venus here, ruling the sign it sits in, means your relationship to beauty isn't decoration on top of your life. It's one of your actual instruments for finding truth.</p>
+    </div>
+    <div class="story-block story-gold">
+      <div class="story-block-label">✦ The Harder Conversation</div>
+      <p>Underneath that is a harder conversation: Jupiter and Saturn, sitting together in Aries, in your 8th house of transformation. This is not a comfortable placement, and it isn't supposed to be. Aries wants to move now. The 8th house insists that real transformation takes time, takes facing what's actually underneath. You carry both of these at once — the urge to leap, and the knowledge that the leap only means something if you've done the deeper work first. That tension isn't a flaw in your chart. It's where your most durable growth actually happens, every time you let both sides speak instead of picking one.</p>
+    </div>
+    <div class="story-block story-sage">
+      <div class="story-block-label">✦ Where Your Stability Lives</div>
+      <p>Your Moon in Aquarius, in Dhanishta nakshatra, in your 6th house, tells you where your emotional stability actually lives: in rhythm, in daily practice, in showing up for something shared. Dhanishta is the drum — a beat-driven, generous placement, an emotional world that's nourished by contribution rather than solitude. When your days have real rhythm, you feel steady. When they don't, that's usually the first thing to check.</p>
+    </div>
+    <div class="story-block story-rose">
+      <div class="story-block-label">✦ What You're Growing Toward</div>
+      <p>Rahu in Cancer, in Pushya nakshatra — "the nourisher," one of the most auspicious placements in the entire system — sits in your 11th house of community and desire. Your evolutionary pull, the thing you're growing toward whether you've named it yet or not, is a community built on real care. Not networking. Tending. And Ketu in Capricorn, in your 5th house, gives you an odd, earned ease in structured creative and personal-goal work — a past-life fluency you don't have to force.</p>
+    </div>
+    <div class="story-block story-gold">
+      <div class="story-block-label">✦ Your Design</div>
+      <p>Then there's your design: a Manifesting Generator with Emotional Authority, Profile 6/2. You are built to move fast once you're clear — Sacral energy connected directly to your Throat means your body knows and your voice can say it almost in the same breath. But "once you're clear" is the whole game for you, because Emotional Authority means clarity is never available in the moment. It arrives after the wave moves through. Your 6th Line means you're here to eventually live as a genuine example — but only after your own trial-and-error years, and a real period of stepping back to actually observe before you're ready. Your 2nd Line says the gift was never something you had to force; it's something the right person, at the right time, pulls you out of solitude to use.</p>
+    </div>
+    <div class="jc-highlight-alex">Put together: you are someone whose deepest convictions are earned through the body, whose growth happens in the friction between moving fast and going deep, whose emotional ground is rhythm and real contribution, and whose gifts are most alive when someone who actually sees you calls them forward. Nothing about that needs to be rushed. It's already working exactly as it was built to.</div>
+    <div class="reflect-prompt-label">Which part feels most alive right now?</div>
+    <div class="reflect-chips" id="storyReflectChips"></div>
   </div>
 
   <!-- INDEX PAGE -->
@@ -471,15 +564,23 @@ const KEY_DATES = {
 };
 
 const NATAL = {
-  sun:     { sign:'Taurus',    house:9,  deg:11.25 },
-  moon:    { sign:'Aquarius',  house:6,  deg:6.37 },
-  mercury: { sign:'Taurus',    house:9,  deg:29.41 },
-  venus:   { sign:'Taurus',    house:9,  deg:6.82 },
-  mars:    { sign:'Taurus',    house:9,  deg:21.58 },
-  jupiter: { sign:'Aries',     house:8,  deg:28.25 },
-  saturn:  { sign:'Aries',     house:8,  deg:28.53 },
-  rahu:    { sign:'Cancer',    house:11, deg:3.47 },
-  ketu:    { sign:'Capricorn', house:5,  deg:3.47 },
+  sun:     { sign:'Taurus',    house:9,  deg:11.25, nakshatra:'Rohini',         pada:1 },
+  moon:    { sign:'Aquarius',  house:6,  deg:6.37,  nakshatra:'Dhanishta',      pada:4 },
+  mercury: { sign:'Taurus',    house:9,  deg:29.41, nakshatra:'Mrigashirsha',   pada:2 },
+  venus:   { sign:'Taurus',    house:9,  deg:6.82,  nakshatra:'Krittika',       pada:4 },
+  mars:    { sign:'Taurus',    house:9,  deg:21.58, nakshatra:'Rohini',         pada:4 },
+  jupiter: { sign:'Aries',     house:8,  deg:28.25, nakshatra:'Krittika',       pada:1 },
+  saturn:  { sign:'Aries',     house:8,  deg:28.53, nakshatra:'Krittika',       pada:1 },
+  rahu:    { sign:'Cancer',    house:11, deg:3.47,  nakshatra:'Pushya',         pada:1 },
+  ketu:    { sign:'Capricorn', house:5,  deg:3.47,  nakshatra:'Uttara Ashadha', pada:3 },
+};
+const RISING = { sign:'Virgo', house:1, deg:22.54, nakshatra:'Hasta', pada:4 };
+const PLANET_LABEL = {sun:'Sun',moon:'Moon',mercury:'Mercury',venus:'Venus',mars:'Mars',jupiter:'Jupiter',saturn:'Saturn',rahu:'Rahu',ketu:'Ketu'};
+const PADA_MEANING = {
+  1:'linked to Dharma — purpose and right action. The most direct, initiating quarter of the nakshatra.',
+  2:'linked to Artha — resources and material means. Turning purpose into something tangible and built.',
+  3:'linked to Kama — desire, pleasure, and relationship. Where the nakshatra\'s energy connects outward to others.',
+  4:'linked to Moksha — release and integration. The most refined, complete expression of the nakshatra before it hands off to the next.',
 };
 const HOUSE_HEADLINE = {
   1:'identity and how you show up', 2:'resources and values',
@@ -791,14 +892,24 @@ function goToday(){ showPage('today'); }
 const EXPLAINER = {
   rising:{ title:'Virgo Rising · Hasta Nakshatra, Pada 4', coords:'1st House · Chart Ruler: Mercury',
     body:'Virgo Rising, ruled by Mercury, gives you precision, discernment, and quiet competence — you notice what others miss, and your presence has a restorative quality. Hasta ("the hand") is Moon-ruled: healing through direct, practical service rather than performance. Pada 4 leans material and grounded — you want results you can actually point to, not just talk about.' },
-  stellium:{ title:'Sun, Mercury, Venus, Mars in Taurus', coords:'9th House · Dharma + Philosophy',
-    body:'Four planets in the same sign and house is rare, and this is the loudest signature in your entire chart. Your sense of purpose is earned through the senses — through the body, through what you can touch and trust — not borrowed from someone else\'s belief. Venus here, in the sign it rules, gives you an unusually strong, natural relationship to beauty; it\'s a real compass for you, not decoration. Mars in Taurus channels drive into patient, material persistence.' },
-  moon:{ title:'Moon in Aquarius · Dhanishta', coords:'6th House · Health + Daily Rhythm',
-    body:'Your emotional world runs on rhythm and community-minded care. Dhanishta ("the drum") carries a beat-driven, generous quality — you\'re nourished by contributing to something shared, not by solitary introspection. In the 6th house, your emotional stability is directly tied to whether your daily routine actually serves you.' },
-  jupsat:{ title:'Jupiter + Saturn in Aries', coords:'8th House · Transformation',
-    body:'Expansion and discipline sitting together in the house of transformation. Aries wants to move now; the 8th house insists real change takes time. That tension is uncomfortable by design — it\'s also exactly where your most durable growth happens, every time you let both sides speak instead of picking one.' },
-  rahu:{ title:'Rahu in Cancer · Pushya', coords:'11th House · Community + Desire',
-    body:'Pushya ("the nourisher") is considered one of the most auspicious nakshatras in the entire system. Your evolutionary pull is toward a community built on real care, not networking. Your 11th house of income and desire runs through that lens — what you\'re building toward should actually feed people.' },
+  sun:{ title:'Sun in Taurus · Rohini, Pada 1', coords:'9th House · Dharma + Philosophy',
+    body:'Your Sun sits in Rohini, the Moon\'s most beloved nakshatra — magnetic, growth-oriented, sensual. Part of your four-planet Taurus stellium in the 9th house, the loudest signature in your entire chart: your identity and sense of purpose are earned through the senses, not borrowed belief. Pada 1 (Dharma) makes this the most direct, purpose-driven placement of the stellium.' },
+  mercury:{ title:'Mercury in Taurus · Mrigashirsha, Pada 2', coords:'9th House · Dharma + Philosophy',
+    body:'Mrigashirsha, "the deer\'s head," is a searching, gently curious nakshatra — always reaching for what\'s just out of view. Your mind processes belief and philosophy the same patient, sensory way the rest of your stellium does. Pada 2 (Artha) grounds that searching mind into something practical and built.' },
+  venus:{ title:'Venus in Taurus · Krittika, Pada 4', coords:'9th House · Dharma + Philosophy',
+    body:'Venus in the sign it rules — one of the strongest placements Venus can have. Krittika, "the cutter," is Sun-ruled and sharply discerning even within a beauty-loving sign: what you\'re drawn to is a real compass, not decoration, and you know precisely what doesn\'t belong. Pada 4 (Moksha) is the most refined, integrated expression of that discernment.' },
+  mars:{ title:'Mars in Taurus · Rohini, Pada 4', coords:'9th House · Dharma + Philosophy',
+    body:'Mars channels its drive into patient, material persistence here rather than impulsive action — sharing Rohini with your Sun, so your will and your core identity are unusually aligned. Pada 4 (Moksha) means this energy is about completion and integration, not starting something new.' },
+  moon:{ title:'Moon in Aquarius · Dhanishta, Pada 4', coords:'6th House · Health + Daily Rhythm',
+    body:'Your emotional world runs on rhythm and community-minded care. Dhanishta ("the drum") carries a beat-driven, generous quality — you\'re nourished by contributing to something shared, not by solitary introspection. In the 6th house, your emotional stability is directly tied to whether your daily routine actually serves you. Pada 4 (Moksha) means this need runs deep and is about real integration, not performance.' },
+  jupiter:{ title:'Jupiter in Aries · Krittika, Pada 1', coords:'8th House · Transformation',
+    body:'Jupiter wants to expand fast in fire-sign Aries, in your house of transformation. Krittika\'s sharp, purifying quality means this expansion cuts away what doesn\'t serve first. Shares Krittika with your Venus — belief and beauty are more linked for you than most people. Pada 1 (Dharma): this growth is in service of real purpose, not just momentum.' },
+  saturn:{ title:'Saturn in Aries · Krittika, Pada 1', coords:'8th House · Transformation',
+    body:'Saturn sitting with Jupiter in Aries in your 8th house is demanding — Aries wants to move now, Saturn insists you earn it first. That tension is where your most durable growth happens. Sharing Krittika (and Pada 1, Dharma) with Jupiter means discipline and expansion are, for you, ultimately in service of the same purpose, not opposing forces.' },
+  rahu:{ title:'Rahu in Cancer · Pushya, Pada 1', coords:'11th House · Community + Desire',
+    body:'Pushya ("the nourisher") is considered one of the most auspicious nakshatras in the entire system. Your evolutionary pull is toward a community built on real care, not networking. Your 11th house of income and desire runs through that lens — what you\'re building toward should actually feed people. Pada 1 (Dharma): this pull is about purpose, not just belonging for its own sake.' },
+  ketu:{ title:'Ketu in Capricorn · Uttara Ashadha, Pada 3', coords:'5th House · Creativity + Past Mastery',
+    body:'Uttara Ashadha, "the later invincible," carries lasting, earned achievement. Ketu here gives you a past-life fluency in structured, disciplined creative work — an ease that doesn\'t need forcing. Pada 3 (Kama) connects that mastery outward, through relationship and shared creative expression, rather than solitary achievement.' },
   hdtype:{ title:'Manifesting Generator', coords:'Human Design · Type',
     body:'Sustainable Sacral energy connected directly to your Throat — the combination that makes you fast and multi-passionate. Strategy: respond first, then inform whoever it affects. Your frustration doesn\'t come from moving fast; it comes from being slowed down, or from skipping a step that actually mattered.' },
   authority:{ title:'Emotional Authority', coords:'Human Design · Inner Authority',
@@ -845,12 +956,21 @@ const NAKSHATRA_REF=[
   {name:'Uttara Bhadrapada',range:'Pisces 3°20\'–16°40\'',lord:'Saturn',def:'"The Latter Blessed Feet." Deep stillness, patient wisdom, spiritual depth earned through time.'},
   {name:'Revati',range:'Pisces 16°40\'–30°',lord:'Mercury',def:'"The Wealthy One." The final nakshatra — arrival, completion, nourishing homecoming after a long journey.'},
 ];
+function planetsInNakshatra(nakName){
+  const out=[];
+  if(RISING.nakshatra===nakName) out.push({label:'Rising', pada:RISING.pada});
+  for(const p of Object.keys(NATAL)){
+    if(NATAL[p].nakshatra===nakName) out.push({label:PLANET_LABEL[p], pada:NATAL[p].pada});
+  }
+  return out;
+}
 function buildNakshatraRef(){
-  const yours=['Hasta','Dhanishta'];
   document.getElementById('nakGrid').innerHTML = NAKSHATRA_REF.map(n=>{
-    const isYours = yours.includes(n.name);
+    const yours=planetsInNakshatra(n.name);
+    const isYours=yours.length>0;
+    const tagText = isYours ? yours.map(y=>`${y.label} (Pada ${y.pada})`).join(', ') : '';
     return `<div class="nak-card ${isYours?'yours':''}">
-      ${isYours?'<div class="nak-yours-tag">Yours</div>':''}
+      ${isYours?`<div class="nak-yours-tag">Yours — ${tagText}</div>`:''}
       <div class="nak-name">${n.name}</div>
       <div class="nak-meta">${n.range} · ruled by ${n.lord}</div>
       <div class="nak-def">${n.def}</div>
@@ -858,10 +978,28 @@ function buildNakshatraRef(){
   }).join('');
 }
 
+// ── SMALL INTERACTIVE REFLECTION CHIPS ──
+function buildReflectChips(containerId, storageKey, options){
+  const el=document.getElementById(containerId); if(!el) return;
+  const state=getState(); const saved=state[storageKey];
+  el.innerHTML = options.map(opt=>`<button class="reflect-chip ${saved===opt?'active':''}" onclick="selectReflectChip('${containerId}','${storageKey}','${opt.replace(/'/g,"\\'")}')">${opt}</button>`).join('');
+}
+function selectReflectChip(containerId, storageKey, value){
+  const state=getState(); state[storageKey]=value; saveState(state);
+  const opts=Array.from(document.getElementById(containerId).children).map(b=>b.textContent);
+  buildReflectChips(containerId, storageKey, opts);
+}
+function initReflectChips(){
+  buildReflectChips('storyReflectChips','story-reflect',['Your identity','Your stellium','The 8th house tension','Your daily rhythm','Your community pull','Your design']);
+  buildReflectChips('astroReflectChips','astro-reflect',['Sun & stellium','Moon','Jupiter + Saturn','Rahu','Ketu']);
+  buildReflectChips('hdReflectChips','hd-reflect',['Clear + settled','Still riding the wave','Excited, not deciding yet','Not sure yet']);
+}
+
 window.addEventListener('DOMContentLoaded', ()=>{
   buildToday();
   buildCal();
   buildNakshatraRef();
+  initReflectChips();
   const dasha=dashaContextFor(getTodayStr());
   if(dasha) document.getElementById('astro-dasha').textContent = `${dasha.mahadasha} / ${dasha.antardasha}`;
 });
