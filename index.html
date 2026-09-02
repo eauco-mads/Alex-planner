@@ -30,15 +30,31 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.top-header{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;justify-content:space-between;}
+.top-header-name{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:500;color:var(--text);letter-spacing:0.02em;}
+.top-header-name em{font-style:italic;color:var(--rust);}
+.top-header-sub{font-size:0.6rem;color:var(--text-light);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px;}
+.top-today-btn{background:var(--rust);color:#fff;border:none;border-radius:20px;padding:7px 16px;font-family:'Inter',sans-serif;font-size:0.72rem;cursor:pointer;letter-spacing:0.05em;white-space:nowrap;}
+.top-today-btn:hover{background:#a03a1a;}
+.month-nav-bar{position:sticky;top:53px;z-index:199;background:var(--sage-bg);border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 14px;scrollbar-width:none;}
+.month-nav-bar::-webkit-scrollbar{display:none;}
+.month-nav-bar button{background:none;border:none;color:var(--text-dim);font-family:'Inter',sans-serif;font-size:0.72rem;padding:10px 13px;cursor:pointer;border-bottom:2px solid transparent;letter-spacing:0.04em;transition:all 0.2s;white-space:nowrap;}
+.month-nav-bar button:hover{color:var(--rust);}
+.month-nav-bar button.active{color:var(--rust);border-bottom-color:var(--rust);font-weight:500;}
 .outer{display:flex;min-height:100vh;}
-.sidebar{width:230px;flex-shrink:0;background:var(--card);border-right:1px solid var(--border);padding:26px 18px;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar{width:230px;flex-shrink:0;background:var(--card);border-right:1px solid var(--border);padding:26px 18px;position:sticky;top:90px;height:calc(100vh - 90px);overflow-y:auto;}
 .main{flex:1;padding:26px 22px 60px;max-width:720px;}
 @media(max-width:760px){
   .outer{flex-direction:column;}
-  .sidebar{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100vh;z-index:250;overflow-y:auto;}
+  .sidebar{display:none;position:fixed;top:90px;left:0;right:0;bottom:0;width:100%;height:calc(100vh - 90px);z-index:250;overflow-y:auto;border-right:none;}
   .sidebar.mobile-open{display:block;}
   .main{padding:18px 14px 60px;}
   .mobile-nav-btn{display:block!important;}
+  .top-header{padding:10px 16px;}
+  .top-header-name{font-size:1.35rem;}
+  .top-header-sub{font-size:0.52rem;}
+  .today-card{padding:16px 18px;}
+  .month-nav-bar{top:66px;}
 }
 .mobile-nav-btn{display:none;width:100%;padding:10px 14px;margin-bottom:14px;background:var(--sage-bg);border:1px solid var(--sage-light);border-radius:10px;color:var(--sage);font-size:0.75rem;letter-spacing:0.05em;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;}
 .mobile-close{display:none;position:absolute;top:14px;right:16px;background:none;border:none;color:var(--text-light);font-size:1.3rem;cursor:pointer;}
@@ -124,6 +140,22 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .modal-date{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--text);margin-bottom:2px;}
 .modal-dow{font-size:0.68rem;color:var(--text-light);margin-bottom:14px;}
 .modal-kd{background:var(--rose-bg);border-left:3px solid var(--rust);border-radius:8px;padding:11px 13px;margin-bottom:12px;}
+.md-dosdonts-card{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;}
+@media(max-width:420px){.md-dosdonts-card{grid-template-columns:1fr;}}
+.md-dd-do,.md-dd-dont{border-radius:10px;padding:11px 12px;}
+.md-dd-do{background:var(--sage-bg);}
+.md-dd-dont{background:var(--rose-bg);}
+.md-dd-label{font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;margin-bottom:4px;}
+.md-dd-do .md-dd-label{color:var(--sage);}
+.md-dd-dont .md-dd-label{color:var(--rust);}
+.md-dd-body{font-size:0.75rem;color:var(--text-dim);line-height:1.6;}
+.md-dd-authority{grid-column:1/-1;background:var(--gold-bg);border-radius:10px;padding:11px 12px;font-size:0.75rem;color:var(--text-dim);line-height:1.6;}
+.md-dd-authority b{color:#96690f;}
+.fullsky-list{display:flex;flex-direction:column;gap:7px;}
+.fullsky-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);font-size:0.75rem;}
+.fullsky-row:last-child{border-bottom:none;}
+.fullsky-planet{color:var(--text);font-weight:500;flex-shrink:0;}
+.fullsky-detail{color:var(--text-dim);text-align:right;}
 .modal-kd b{display:block;font-family:'Cormorant Garamond',serif;font-size:0.95rem;color:var(--rust);margin-bottom:3px;font-weight:500;}
 .modal-kd div{font-size:0.78rem;color:var(--text-dim);line-height:1.65;}
 .modal-section{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
@@ -189,6 +221,14 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 </style>
 </head>
 <body>
+<div class="top-header">
+  <div>
+    <div class="top-header-name"><em>Alex's</em> <span style="font-size:0.85rem;font-weight:300;color:var(--text-light);letter-spacing:0.04em;">Life Navigation Planner</span></div>
+    <div class="top-header-sub">Jyotish · Lahiri Ayanamsha · Whole Sign Houses · June 2026 – July 2027</div>
+  </div>
+  <button class="top-today-btn" onclick="goToday()">✦ Today</button>
+</div>
+<div class="month-nav-bar" id="topMonthNav"></div>
 <div class="outer">
 <aside class="sidebar" id="sidebar">
   <button class="mobile-close" onclick="toggleSidebar()">✕</button>
@@ -496,13 +536,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="modal-dow" id="md-dow"></div>
     <div id="md-kd"></div>
     <div id="md-recap"></div>
+    <div class="md-dosdonts-card" id="md-dosdonts"></div>
     <div class="modal-section">
-      <div class="modal-toggle" onclick="toggleModalSection(this)"><span>Energy of the Day, expanded</span><span class="arrow">▸</span></div>
-      <div class="modal-toggle-body" id="md-energy"></div>
-    </div>
-    <div class="modal-section">
-      <div class="modal-toggle" onclick="toggleModalSection(this)"><span>Do's + Don'ts</span><span class="arrow">▸</span></div>
-      <div class="modal-toggle-body" id="md-dosdonts"></div>
+      <div class="modal-toggle" onclick="toggleModalSection(this)"><span>Today's Full Sky, Mapped to You</span><span class="arrow">▸</span></div>
+      <div class="modal-toggle-body" id="md-fullsky"></div>
     </div>
     <div class="modal-section">
       <div class="modal-toggle" onclick="toggleModalSection(this)"><span>Mood + Journal</span><span class="arrow">▸</span></div>
@@ -701,6 +738,25 @@ function dayRecap(dateStr){
   if(targets.length) return `${conjunctions[targets[0]].map(cap).join(' + ')} activating your natal ${cap(targets[0])}.`;
   return `Moon in ${day.moon.sign}, your ${ordinal(day.moon.house)} house.`;
 }
+function dayFullSkyBreakdown(dateStr){
+  const day=EPHEMERIS.daily[dateStr]; if(!day) return [];
+  const order=['sun','moon','mercury','venus','mars','jupiter','saturn','rahu','ketu'];
+  return order.map(p=>{
+    const t=day[p]; const natal=NATAL[p];
+    let note = HOUSE_HEADLINE[t.house] || '';
+    if(t.retrograde) note = 'retrograde — ' + note;
+    let touches = '';
+    if(natal && t.sign===natal.sign && Math.abs(t.deg-natal.deg)<=3) touches = ` — sitting right on your natal ${cap(p)}`;
+    return { planet:cap(p), sign:t.sign, house:ordinal(t.house), nakshatra:t.nakshatra, note, touches };
+  });
+}
+function renderFullSkyHTML(dateStr){
+  const rows=dayFullSkyBreakdown(dateStr);
+  if(!rows.length) return '';
+  return `<div class="fullsky-list">` + rows.map(r=>
+    `<div class="fullsky-row"><span class="fullsky-planet">${r.planet}</span><span class="fullsky-detail">${r.sign} · ${r.nakshatra} · your ${r.house} house${r.touches}</span></div>`
+  ).join('') + `</div>`;
+}
 function plainDailyReading(dateStr){
   const day=EPHEMERIS.daily[dateStr]; if(!day) return null;
   const dasha=dashaContextFor(dateStr);
@@ -838,7 +894,19 @@ function buildCal(){
 }
 function navMonth(dir){
   let idx=MONTHS.findIndex(m=>m[0]===calY&&m[1]===calM); idx=Math.max(0,Math.min(MONTHS.length-1,idx+dir));
-  calY=MONTHS[idx][0]; calM=MONTHS[idx][1]; buildCal();
+  calY=MONTHS[idx][0]; calM=MONTHS[idx][1]; buildCal(); buildMonthNav();
+}
+const MONTH_NAMES=['','January','February','March','April','May','June','July','August','September','October','November','December'];
+function goToMonth(y,m){
+  calY=y; calM=m; buildCal(); buildMonthNav();
+  showPage('today');
+}
+function buildMonthNav(){
+  const el=document.getElementById('topMonthNav'); if(!el) return;
+  el.innerHTML = MONTHS.map(([y,m])=>{
+    const active = (y===calY && m===calM) ? ' active' : '';
+    return `<button class="${active}" onclick="goToMonth(${y},${m})">${MONTH_NAMES[m]} ${y}</button>`;
+  }).join('');
 }
 
 let currentDay='';
@@ -848,14 +916,13 @@ function openDay(ds){
   document.getElementById('md-dow').textContent=days[d.getDay()];
   const kd=KEY_DATES[ds];
   document.getElementById('md-kd').innerHTML=kd?`<div class="modal-kd"><b>${kd.title}</b><div>${kd.body}</div></div>`:'';
-  document.getElementById('md-recap').innerHTML=`<div style="font-size:0.82rem;color:var(--text-dim);line-height:1.6;font-family:'Cormorant Garamond',serif;font-size:1rem;">${dayRecap(ds)}</div>`;
-  const reading=plainDailyReading(ds);
-  document.getElementById('md-energy').innerHTML=reading?renderDeeperHTML([{label:'Full picture',body:reading.headline}, ...reading.deeper]):'';
+  document.getElementById('md-recap').innerHTML=`<div style="color:var(--text-dim);line-height:1.6;font-family:'Cormorant Garamond',serif;font-size:1.05rem;">${dayRecap(ds)}</div>`;
+  document.getElementById('md-fullsky').innerHTML=renderFullSkyHTML(ds);
   const dd=dayDosDonts(ds);
   document.getElementById('md-dosdonts').innerHTML=dd?`
-    <div class="deeper-item"><div class="deeper-item-label">Do</div><div class="deeper-item-body">${dd.dos}</div></div>
-    <div class="deeper-item"><div class="deeper-item-label">Don't</div><div class="deeper-item-body">${dd.donts}</div></div>
-    <div class="deeper-item"><div class="deeper-item-label">Your Authority</div><div class="deeper-item-body">${dd.authorityLine}</div></div>
+    <div class="md-dd-do"><div class="md-dd-label">✧ Do</div><div class="md-dd-body">${dd.dos}</div></div>
+    <div class="md-dd-dont"><div class="md-dd-label">✧ Don't</div><div class="md-dd-body">${dd.donts}</div></div>
+    <div class="md-dd-authority"><b>Your Authority:</b> ${dd.authorityLine}</div>
   `:'';
   const state=getState();
   document.getElementById('md-moods').innerHTML=['😊','😌','😔','😤','😴'].map(m=>`<button class="mood-btn ${state['mood-'+ds]===m?'active':''}" onclick="setMood('${m}',this)">${m}</button>`).join('');
@@ -887,7 +954,11 @@ function toggleSidebar(force){
   if(force===false){ sb.classList.remove('mobile-open'); return; }
   sb.classList.toggle('mobile-open');
 }
-function goToday(){ showPage('today'); }
+function goToday(){
+  calY=new Date().getFullYear(); calM=new Date().getMonth()+1;
+  buildCal(); buildMonthNav();
+  showPage('today');
+}
 
 // ── SIDEBAR PLANET EXPLAINER ──
 const EXPLAINER = {
@@ -1028,6 +1099,7 @@ function initReflectChips(){
 window.addEventListener('DOMContentLoaded', ()=>{
   buildToday();
   buildCal();
+  buildMonthNav();
   buildNakshatraRef();
   initReflectChips();
   const dasha=dashaContextFor(getTodayStr());
