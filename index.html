@@ -203,6 +203,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .nakm-placement b{font-family:'Cormorant Garamond',serif;font-size:0.98rem;color:var(--text);font-weight:500;}
 .nakm-sub{font-size:0.66rem;color:var(--text-light);margin:2px 0 4px;line-height:1.5;}
 .nakm-placement p{font-size:0.78rem;color:var(--text-dim);line-height:1.7;}
+.nakm-padanote{background:var(--card);border-radius:8px;padding:10px 12px;margin-top:8px;}
+.nakm-pada{padding:8px 0;border-bottom:1px solid var(--border);font-size:0.76rem;color:var(--text);}
+.nakm-pada:last-child{border-bottom:none;}
+.nakm-pada i{color:var(--sage);font-style:normal;font-weight:500;}
+.nakm-pada div{color:var(--text-dim);margin-top:2px;line-height:1.6;}
+.nakm-pada.mine{background:var(--rose-bg);border-radius:8px;padding:8px 10px;border-bottom:none;margin:2px 0;}
+.nakm-pada-tag{background:var(--rust);color:#fff;font-size:0.55rem;letter-spacing:0.05em;text-transform:uppercase;border-radius:8px;padding:1px 7px;vertical-align:middle;}
 .nakm-invite{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--text);border-top:1px solid var(--border);padding-top:12px;margin-top:4px;line-height:1.6;}
 .nak-yours-tag{display:inline-block;background:var(--rust);color:#fff;font-size:0.58rem;letter-spacing:0.05em;text-transform:uppercase;border-radius:8px;padding:2px 8px;margin-bottom:5px;}
 .jc-highlight-alex{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--text);margin:14px 0 0;padding:14px 16px;border-left:3px solid var(--rose);background:var(--rose-bg);border-radius:0 8px 8px 0;line-height:1.7;}
@@ -1243,18 +1250,57 @@ const NAK_DEEP={
     shadow:'Absorbing others\' pain. Drifting rather than choosing.',
     invite:'You\'ve arrived more than you realize. Let yourself rest there.'},
 };
+// Each pada falls in a zodiac sign (its navamsa) — that sign colors how the quarter expresses.
+const NAK_SIGNS=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+const PADA_AIM={1:'Dharma',2:'Artha',3:'Kama',4:'Moksha'};
+const SIGN_FLAVOR={
+  Aries:'bold and self-starting — this quarter wants to go first.',
+  Taurus:'steady and sensory — this quarter builds slowly and keeps what it builds.',
+  Gemini:'curious and talkative — this quarter learns by connecting ideas and people.',
+  Cancer:'nurturing and protective — this quarter leads with emotional care.',
+  Leo:'warm and radiant — this quarter leads with heart and wants to be seen.',
+  Virgo:'precise and practical — this quarter refines things until they actually work.',
+  Libra:'relational and balancing — this quarter finds itself through other people.',
+  Scorpio:'deep and intense — this quarter wants truth, not surface.',
+  Sagittarius:'expansive and seeking — this quarter always wants the bigger why.',
+  Capricorn:'disciplined and long-game — this quarter builds things to last.',
+  Aquarius:'visionary and community-minded — this quarter works for the collective.',
+  Pisces:'intuitive and devotional — this quarter softens, surrenders, and trusts.',
+};
+function padaSign(nakIdx,pada){ return NAK_SIGNS[(nakIdx*4+pada-1)%12]; }
+// Alex's own padas, read through their sign
+const PADA_NOTE={
+  rising:'Hasta Pada 4 falls in Cancer. Hasta\'s healing hands, filtered through Cancer: your skill lands best when it carries real emotional care. You don\'t just fix things — you make people feel looked after while you do it. This quarter softens Hasta\'s precision into something protective and quietly nurturing.',
+  sun:'Rohini Pada 1 falls in Aries. Rohini\'s lush, magnetic growth with an Aries spark — you don\'t just attract, you initiate. This is the most self-starting quarter of Rohini: your sense of purpose wants to plant the first seed, not wait for the field to be ready.',
+  mars:'Rohini Pada 4 falls in Cancer. Your Mars moves through Rohini\'s softest, most nurturing quarter. Your drive isn\'t about conquering — it\'s about protecting and growing what you love. You fight hardest for the people and things you\'re tending.',
+  mercury:'Mrigashirsha Pada 2 falls in Virgo — the sign where Mercury is strongest. The searching deer, grounded: your curiosity has a practical streak, and you research until it\'s usable. The search ends when you can actually do something with what you found.',
+  venus:'Krittika Pada 4 falls in Pisces — the sign where Venus is exalted, one of the sweetest spots she can land. Krittika\'s blade, softened: your discernment about beauty and love is sharp but compassionate. You know what doesn\'t belong, and you let it go with grace rather than force.',
+  jupiter:'Krittika Pada 1 falls in Sagittarius — Jupiter\'s own sign, so it\'s especially at home here. Krittika\'s purifying fire burns toward meaning and truth. Once you\'re through an 8th-house transformation, what you learned comes out wise and teacher-like.',
+  saturn:'Krittika Pada 1 falls in Sagittarius, the exact quarter Saturn shares with Jupiter. Here Saturn\'s discipline serves a bigger belief — you\'ll do the slow, hard work as long as you can see the why. Without the why it feels like punishment. With it, it\'s devotion.',
+  rahu:'Pushya Pada 1 falls in Leo. Pushya\'s nourishment with Leo\'s warmth and visibility: your pull toward community isn\'t meant to stay behind the scenes. This quarter wants to lead with heart and be seen caring — generous, radiant, a natural host.',
+  ketu:'Uttara Ashadha Pada 3 falls in Aquarius. Lasting achievement in service of the collective: you carry an old fluency in building things for the group, not just yourself. That\'s why community work can feel so natural — almost familiar.',
+  moon:'Dhanishta Pada 4 falls in Scorpio. The drum, played with Scorpio\'s depth: your Moon wants rhythm and contribution, but it also needs real emotional truth underneath. Surface-level togetherness won\'t feed you. Deep, loyal, all-in belonging will.',
+};
 const PLANET_KEY_BY_LABEL={Rising:'rising',Sun:'sun',Moon:'moon',Mercury:'mercury',Venus:'venus',Mars:'mars',Jupiter:'jupiter',Saturn:'saturn',Rahu:'rahu',Ketu:'ketu'};
 function openNakshatra(name){
   const n=NAKSHATRA_REF.find(x=>x.name===name); const d=NAK_DEEP[name]; if(!n||!d) return;
   const yours=planetsInNakshatra(name);
+  const idx=NAKSHATRA_REF.indexOf(n);
+  const yourPadas=new Set(yours.map(y=>y.pada));
+  const padasHtml=[1,2,3,4].map(p=>{
+    const sign=padaSign(idx,p), mine=yourPadas.has(p);
+    return `<div class="nakm-pada ${mine?'mine':''}"><b>Pada ${p}</b> · ${PADA_AIM[p]} · <i>${sign}</i>${mine?' <span class="nakm-pada-tag">yours</span>':''}
+      <div>${SIGN_FLAVOR[sign].charAt(0).toUpperCase()+SIGN_FLAVOR[sign].slice(1)}</div></div>`;
+  }).join('');
   let yoursHtml='';
   if(yours.length){
     yoursHtml=`<div class="nakm-yours"><div class="nakm-label">✦ In your chart</div>`+
       yours.map(y=>{
-        const ex=EXPLAINER[PLANET_KEY_BY_LABEL[y.label]];
+        const key=PLANET_KEY_BY_LABEL[y.label], ex=EXPLAINER[key];
         return `<div class="nakm-placement"><b>${ex?ex.title:`${y.label} · Pada ${y.pada}`}</b>
-          <div class="nakm-sub">${ex?ex.coords+' · ':''}Pada ${y.pada} — ${PADA_MEANING[y.pada]}</div>
-          ${ex?`<p>${ex.body}</p>`:''}</div>`;
+          <div class="nakm-sub">${ex?ex.coords+' · ':''}Pada ${y.pada} in ${padaSign(idx,y.pada)} — ${PADA_MEANING[y.pada]}</div>
+          ${ex?`<p>${ex.body}</p>`:''}
+          ${PADA_NOTE[key]?`<div class="nakm-padanote"><div class="nakm-label">Your pada, specifically</div><p>${PADA_NOTE[key]}</p></div>`:''}</div>`;
       }).join('')+`</div>`;
   }
   document.getElementById('nakm-title').textContent=n.name;
@@ -1269,6 +1315,10 @@ function openNakshatra(name){
     ${yoursHtml}
     <div class="nakm-row"><div class="nakm-label">Gifts</div><p>${d.gifts}</p></div>
     <div class="nakm-row"><div class="nakm-label">Growth edge</div><p>${d.shadow}</p></div>
+    <div class="modal-section">
+      <div class="modal-toggle" onclick="toggleModalSection(this)"><span>The 4 padas of ${n.name}</span><span class="arrow">▸</span></div>
+      <div class="modal-toggle-body">${padasHtml}</div>
+    </div>
     <div class="nakm-invite">${d.invite}</div>`;
   document.getElementById('nakModal').classList.add('open');
 }
