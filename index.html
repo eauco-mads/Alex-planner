@@ -438,10 +438,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="info-card" style="margin-bottom:16px;">
       <h4>Wait, what's a pada?</h4>
       <p>Each nakshatra actually splits into 4 mini-quarters called padas. Think of them as the "which chapter of this story am I in" marker — traditionally each one is tied to one of the four big aims of life:</p>
-      <p><b style="color:var(--text)">Pada 1</b> — Dharma. Purpose, doing the right thing. The most straight-up, get-going quarter.</p>
-      <p><b style="color:var(--text)">Pada 2</b> — Artha. Resources, making it real. Turning purpose into something you can actually hold.</p>
-      <p><b style="color:var(--text)">Pada 3</b> — Kama. Desire, pleasure, connection. Where this energy starts reaching out toward other people.</p>
-      <p><b style="color:var(--text)">Pada 4</b> — Moksha. Letting go, integrating. The most settled, wisest version of this nakshatra before it hands things off to the next one.</p>
+      <p style="font-size:0.7rem;color:var(--text-light);">Tap any pada to go deeper ↓</p>
+      <p><b class="index-link pada-link" style="color:var(--text)" role="button" tabindex="0" onclick="openPada(1)" onkeydown="if(event.key==='Enter')openPada(1)">Pada 1</b> — Dharma. Purpose, doing the right thing. The most straight-up, get-going quarter.</p>
+      <p><b class="index-link pada-link" style="color:var(--text)" role="button" tabindex="0" onclick="openPada(2)" onkeydown="if(event.key==='Enter')openPada(2)">Pada 2</b> — Artha. Resources, making it real. Turning purpose into something you can actually hold.</p>
+      <p><b class="index-link pada-link" style="color:var(--text)" role="button" tabindex="0" onclick="openPada(3)" onkeydown="if(event.key==='Enter')openPada(3)">Pada 3</b> — Kama. Desire, pleasure, connection. Where this energy starts reaching out toward other people.</p>
+      <p><b class="index-link pada-link" style="color:var(--text)" role="button" tabindex="0" onclick="openPada(4)" onkeydown="if(event.key==='Enter')openPada(4)">Pada 4</b> — Moksha. Letting go, integrating. The most settled, wisest version of this nakshatra before it hands things off to the next one.</p>
     </div>
     <div class="nak-grid" id="nakGrid"></div>
   </div>
@@ -1320,6 +1321,47 @@ function openNakshatra(name){
       <div class="modal-toggle-body">${padasHtml}</div>
     </div>
     <div class="nakm-invite">${d.invite}</div>`;
+  document.getElementById('nakModal').classList.add('open');
+}
+// ── PADA DEEP DIVES (tap Pada 1–4 on the nakshatra page) ──
+const PADA_DEEP={
+  1:{aim:'Dharma',element:'Fire',signs:'Aries, Leo, or Sagittarius',
+    essence:'Dharma is purpose — the thing that feels right to do, even when it\'s hard. Pada 1 is where a nakshatra\'s energy first catches fire: direct, initiating, a little impatient to get going. It always falls in a fire sign, which is why this quarter has that spark.',
+    flowing:'You feel clear on your why. Motivated, aligned, ready to move.',
+    off:'Pushing just to keep momentum, or chasing what\'s "right" by someone else\'s standard instead of your own.',
+    yours:'Four of your placements live here — Sun, Jupiter, Saturn, and Rahu. Your core identity, your growth, your discipline, and your evolutionary pull all want to act from purpose. If something doesn\'t have a real why behind it, it\'s hard for you to stay in it.'},
+  2:{aim:'Artha',element:'Earth',signs:'Taurus, Virgo, or Capricorn',
+    essence:'Artha is resources and means — money, skill, structure, anything that makes life tangible. Pada 2 takes the spark of Pada 1 and asks: okay, how do we actually build this? It always falls in an earth sign, so it\'s grounded and practical by nature.',
+    flowing:'Steady progress. Things you can point to and say "I made that real."',
+    off:'Measuring your worth by your output, or getting so practical you forget why you started.',
+    yours:'Just one placement here — Mercury. Your make-it-real, build-it-properly energy runs mostly through your mind: how you research, plan, and figure out the practical next step.'},
+  3:{aim:'Kama',element:'Air',signs:'Gemini, Libra, or Aquarius',
+    essence:'Kama is desire — pleasure, relationship, connection, everything that makes life sweet. Pada 3 is where the nakshatra\'s energy reaches outward toward other people. It always falls in an air sign: social, curious, connective.',
+    flowing:'Creative, collaborative, genuinely enjoying the people and the process.',
+    off:'Scattering in too many directions, or needing others around to feel whole.',
+    yours:'Just one placement here — Ketu, which shows what you\'ve already mastered. Connecting people and creating together may come so naturally that you don\'t even count it as a skill. It is one.'},
+  4:{aim:'Moksha',element:'Water',signs:'Cancer, Scorpio, or Pisces',
+    essence:'Moksha is liberation — letting go, integrating, coming home to yourself. Pada 4 is the deepest, most inward quarter, where a nakshatra matures before it hands off to the next one. It always falls in a water sign: emotional, intuitive, deep.',
+    flowing:'Wise, intuitive, at peace with what is. You feel things fully and let them move through.',
+    off:'Withdrawing, or holding emotion you haven\'t had space to process yet.',
+    yours:'Four placements here — your Rising, Moon, Venus, and Mars. How you show up, how you feel, how you love, and how you act all run through the most inward, integrative quarter. Paired with your four in Pada 1, your chart leans on the bookends: start from purpose, then go all the way deep.'},
+};
+function openPada(n){
+  const d=PADA_DEEP[n]; if(!d) return;
+  const mine=[];
+  if(RISING.pada===n) mine.push({label:'Rising',nak:RISING.nakshatra});
+  for(const p of Object.keys(NATAL)) if(NATAL[p].pada===n) mine.push({label:PLANET_LABEL[p],nak:NATAL[p].nakshatra});
+  const list=mine.map(m=>{
+    const idx=NAKSHATRA_REF.findIndex(x=>x.name===m.nak);
+    return `<div class="nakm-pada mine"><span class="index-link" onclick="openNakshatra('${m.nak}')"><b>${m.label}</b> · ${m.nak} in <i>${padaSign(idx,n)}</i> →</span></div>`;
+  }).join('');
+  document.getElementById('nakm-title').textContent=`Pada ${n} · ${d.aim}`;
+  document.getElementById('nakm-coords').textContent=`${d.element} · always ${d.signs}`;
+  document.getElementById('nakm-body').innerHTML=`
+    <p class="nakm-essence">${d.essence}</p>
+    <div class="nakm-row"><div class="nakm-label">When it's flowing</div><p>${d.flowing}</p></div>
+    <div class="nakm-row"><div class="nakm-label">When it's off</div><p>${d.off}</p></div>
+    <div class="nakm-yours"><div class="nakm-label">✦ In your chart</div><p style="font-size:0.78rem;color:var(--text-dim);line-height:1.7;margin-bottom:6px;">${d.yours}</p>${list}</div>`;
   document.getElementById('nakModal').classList.add('open');
 }
 function closeNak(){ document.getElementById('nakModal').classList.remove('open'); }
