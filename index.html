@@ -89,6 +89,19 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .deeper-item-body{font-size:0.76rem;color:var(--text-dim);line-height:1.7;}
 
 /* Prompt + checklist */
+.tn-label{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-light);margin:16px 0 8px;}
+.tn-card{background:var(--gold-bg);border-radius:12px;padding:14px 16px;border-left:3px solid var(--gold);}
+.tn-head{cursor:pointer;}
+.tn-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--text);}
+.tn-sub{font-size:0.66rem;color:var(--text-light);margin:2px 0 8px;}
+.tn-pada{color:var(--sage);border-bottom:1px dashed var(--sage-light);cursor:pointer;}
+.tn-head p{font-size:0.8rem;color:var(--text-dim);line-height:1.7;}
+.tn-echo{background:var(--rose-bg);border-radius:8px;padding:9px 12px;margin-top:8px;font-size:0.76rem;color:var(--text-dim);line-height:1.6;cursor:pointer;}
+.tn-echo b{color:var(--text);font-weight:600;}
+.tn-echo span{color:var(--rust);}
+.tn-invite{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--text);line-height:1.55;margin-top:12px;padding-top:10px;border-top:1px solid var(--border);}
+.tn-invite span{display:block;font-family:'Inter',sans-serif;font-style:normal;font-size:0.56rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--sage);margin-bottom:3px;}
+.tn-more{font-size:0.66rem;color:var(--sage);margin-top:8px;cursor:pointer;}
 .today-prompt{background:var(--sage-bg);border-radius:10px;padding:12px 14px;margin-top:12px;font-size:0.8rem;color:var(--text-dim);line-height:1.6;border-left:3px solid var(--sage);}
 .today-prompt b{display:block;font-family:'Cormorant Garamond',serif;font-size:0.92rem;color:var(--sage);margin-bottom:3px;font-weight:500;}
 .today-todos{margin-top:12px;}
@@ -301,6 +314,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="tc-blurb" id="tc-blurb">—</div>
       <div class="go-deeper-toggle" id="tc-deeper-toggle" onclick="toggleDeeper(this)"><span class="arrow">▸</span> A bit more, if you're curious</div>
       <div class="go-deeper-body" id="tc-deeper-body"></div>
+      <div id="tc-nak"></div>
       <div class="today-prompt" id="tc-prompt-wrap" style="display:none;">
         <b>Today's Prompt</b>
         <span id="tc-prompt-text"></span>
@@ -880,6 +894,31 @@ const DOW_TODOS={
   6:['Do the thing you\'ve been avoiding because it feels like work','Review: what worked this week, what didn\'t'],
 };
 
+// ── TODAY IN THE NAKSHATRAS (real ephemeris, tied to your natal nakshatras) ──
+function todayNakshatraHTML(ds){
+  const day=EPHEMERIS.daily[ds]; if(!day) return '';
+  const m=day.moon, idx=NAKSHATRA_REF.findIndex(n=>n.name===m.nakshatra); if(idx<0) return '';
+  const d=NAK_DEEP[m.nakshatra], sign=padaSign(idx,m.pada);
+  const mine=[{label:'Rising',nak:RISING.nakshatra,pada:RISING.pada}].concat(Object.keys(NATAL).map(p=>({label:PLANET_LABEL[p],nak:NATAL[p].nakshatra,pada:NATAL[p].pada})));
+  const PL={moon:'The Moon',sun:'The Sun',mercury:'Mercury',venus:'Venus',mars:'Mars',jupiter:'Jupiter',saturn:'Saturn',rahu:'Rahu',ketu:'Ketu'};
+  const echoes=[];
+  for(const p of Object.keys(PL)){
+    const t=day[p]; if(!t) continue;
+    mine.filter(x=>x.nak===t.nakshatra).forEach(x=>echoes.push(
+      `<div class="tn-echo" onclick="openNakshatra('${t.nakshatra}')">✦ <b>${PL[p]}</b> is moving through <b>${t.nakshatra}</b> — the same nakshatra as your natal ${x.label}${t.pada===x.pada?', in the exact same pada':''}. That part of you is a little more lit up${['jupiter','saturn','rahu','ketu'].includes(p)?' this season':' today'}. <span>→</span></div>`));
+  }
+  return `<div class="tn-label">Today in the nakshatras</div>
+  <div class="tn-card">
+    <div class="tn-head" onclick="openNakshatra('${m.nakshatra}')">
+      <div class="tn-name">Moon in ${m.nakshatra}</div>
+      <div class="tn-sub"><span class="tn-pada" onclick="event.stopPropagation();openPada(${m.pada})">Pada ${m.pada} · ${PADA_AIM[m.pada]}</span> · in ${sign} · ruled by ${NAKSHATRA_REF[idx].lord}</div>
+      <p>${d.essence.split('. ').slice(0,2).join('. ').replace(/\.?$/,'.')}</p>
+    </div>
+    ${echoes.join('')}
+    <div class="tn-invite"><span>Today's invitation</span>${d.invite}</div>
+    <div class="tn-more" onclick="openNakshatra('${m.nakshatra}')">Read about ${m.nakshatra} →</div>
+  </div>`;
+}
 function buildToday(){
   const ds=getTodayStr(); const d=new Date(); const dow=d.getDay();
   document.getElementById('tc-date').textContent=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
@@ -889,6 +928,7 @@ function buildToday(){
     document.getElementById('tc-deeper-body').innerHTML=renderDeeperHTML(reading.deeper);
     document.getElementById('tc-moon').textContent=`${reading.teaser.emoji} ${reading.teaser.phaseName} · ${reading.teaser.sign}`;
   }
+  document.getElementById('tc-nak').innerHTML=todayNakshatraHTML(ds);
   const tipIdx=(d.getDate()+d.getMonth()*31)%DAILY_PROMPTS.length;
   document.getElementById('tc-prompt-text').textContent=DAILY_PROMPTS[tipIdx];
   document.getElementById('tc-prompt-wrap').style.display='block';
